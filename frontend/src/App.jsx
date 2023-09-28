@@ -1,0 +1,89 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// Hooks
+import { UseUserContext } from './Hooks/UseUserContext';
+
+// Component
+import { Sidebar, Navbar } from './Components';
+
+// Pages
+import { CssDasar, CssLanjut, GithubPage, Home, HtmlDasar, HtmlLanjut, JsDasar, JsLanjut, NodeJsPage, NotFoundPage, ReactJsPage } from './pages/mainScreen';
+import { DetailStudent } from './pages/mainScreen/userPage';
+import { Login, ForgetPass } from './pages';
+import ChangeDataPage from './pages/auth/ChangeDataPage';
+import DetailMateriPage from './pages/DetailMateriPage';
+
+const App = () => {
+  const { user } = UseUserContext();
+
+  return (
+
+    <BrowserRouter>
+      <div className={user && "flex relative"}>
+        {user && <div className='mt-4 fixed sidebar ml-3 shadow-md bg-white'>
+          <Sidebar />
+        </div>}
+        <div className={user && "md:ml-80 min-h-screen w-full"}>
+          {user && <div className='p-2 w-full'>
+            <Navbar />
+          </div>}
+          <div>
+            <Routes>
+              {/* Default Route */}
+              <Route path='/' element={!user ? <Navigate to='/login' /> : <Navigate to='/home' />} />
+
+              {/* Login Page */}
+              <Route path='/login' element={!user ? <Login /> : <Navigate to='/home' />} />
+              <Route path='/register' element={!user ? <Login /> : <Navigate to='/home' />} />
+
+              {/* lupa password */}
+              <Route path='/forget-password' element={!user ? <ForgetPass /> : <Navigate to="/home" />} />
+
+              {/* Main Application */}
+              <Route path='/home'>
+                <Route index element={user ? <Home /> : <Navigate to='/login' />} />
+                <Route path=':id' element={user ? <ChangeDataPage /> : <Navigate to='/login' />} />
+              </Route>
+
+              {/* Detail Student */}
+              <Route path='/student/:id' element={user && <DetailStudent />} />
+
+              {/* HTML Page */}
+              <Route path='/html-dasar' element={user ? <HtmlDasar /> : <Navigate to={'/login'} />} />
+              <Route path='/html-lanjutan' element={user ? <HtmlLanjut /> : <Navigate to={'/login'}/>} />
+
+              {/* CSS Page */}
+              <Route path='/css-dasar' element={ user ? <CssDasar /> : <Navigate to={'/login'}/>} />
+              <Route path='/css-lanjut' element={ user ? <CssLanjut /> : <Navigate to={'/login'}/>} />
+
+              {/* JS Page */}
+              <Route path='/javascript-dasar' element={user ? <JsDasar /> : <Navigate to={'/login'}/>} />
+              <Route path='/javascript-lanjut' element={user ? <JsLanjut /> : <Navigate to={'login'}/>} />
+
+              {/* Github Page */}
+              <Route path='/git-github' element={user ? <GithubPage /> : <Navigate to={'/login'}/>} />
+
+              {/* NodeJS Page */}
+              <Route path='/node-js' element={user ? <NodeJsPage /> : <Navigate to={'/login'}/>} />
+
+              {/* React Page */}
+              <Route path='/react-js' element={user ? <ReactJsPage /> : <Navigate to={'login'}/>} />
+
+              {/* Detail Materi */}
+              <Route path='/materi/:id' element={user ? <DetailMateriPage/> : <Navigate to={'/login'}/>}/>
+
+              <Route path='*' element={<NotFoundPage/>}/>
+              <Route/>
+            </Routes>
+          </div>
+        </div>
+
+      </div>
+
+
+    </BrowserRouter>
+  );
+}
+
+export default App

@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+   --primary: #1aac83;
+   --error: #e7195a;
+}
+
+.nav-item,
+.navbar {
+   z-index: 10000;
+}
+
+.sidebar {
+   box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
+}
+
+.text-second {
+   font-family: 'Permanent Marker', cursive;
+}
+
+.text-first {
+   font-family: 'Titan One', cursive;
+}
+
+.text-third {
+   font-family: 'REM', sans-serif;
+}
+
+div.error {
+   padding: 10px;
+   background: #ffefef;
+   border: 1px solid var(--error);
+   color: var(--error);
+   border-radius: 4px;
+   margin: 20px 0;
+}
+
+::-webkit-scrollbar {
+   width: 10px;
+}
+
+::-webkit-scrollbar-track {
+   background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+   background: #047857;
+      border-radius: 5px;
+}
