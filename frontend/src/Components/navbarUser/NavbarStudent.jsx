@@ -14,7 +14,6 @@ import Photosmp from "../../assets/images/Photo-smp.png";
 const NavbarStudent = () => {
    const { user } = UseUserContext();
    const { handleClicked, initialValue } = useActContext();
-   console.log(user)
   return (
      <div className='px-10 flex w-3/2 py-2 flex-row-reverse justify-between shadow-md rounded-md'>
         <div className='photo-user rounded-full w-11 h-11 overflow-hidden'>
