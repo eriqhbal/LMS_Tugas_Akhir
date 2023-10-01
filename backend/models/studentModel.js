@@ -12,9 +12,9 @@ const studentSchema = new mongoose.Schema({
 });
 
 studentSchema.statics.signUp = async function (
-  nameUserFront,
-  nameUserBack,
-  newPassword,
+  namaDepan,
+  nameBelakang,
+  password,
   emailUser
 ) {
   const alreadyUser = await this.findOne({ emailStudent: emailUser });
@@ -23,7 +23,7 @@ studentSchema.statics.signUp = async function (
     throw Error("Email Sudah Digunakan");
   }
 
-  if (!nameUserFront || !nameUserBack || !emailUser || !newPassword) {
+  if (!namaDepan || !nameBelakang || !emailUser || !password) {
     throw Error("Form Tidak Boleh Ada Yang Kosong!");
   }
 
@@ -35,20 +35,20 @@ studentSchema.statics.signUp = async function (
     throw Error("Harus Menggunakan Email Student UIR");
   }
 
-  if (!validator.isStrongPassword(newPassword)) {
+  if (!validator.isStrongPassword(password)) {
     throw Error(
       "Password Anda Tidak Kuat, harus mengandung huruf capital, angka, simbol"
     );
   }
 
-  const newUser = await this.create({
-    namaDepan: nameUserFront,
-    namaBelakang: nameUserBack,
+  const dataUser = await this.create({
+    namaDepan: namaDepan,
+    namaBelakang: nameBelakang,
     email: emailUser,
-    password: newPassword,
+    password: password,
   });
 
-  return newUser;
+  return dataUser;
 };
 
 

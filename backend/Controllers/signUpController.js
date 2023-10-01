@@ -8,18 +8,18 @@ function createToken(_id) {
 }
 
 const signUpController = async (req, res) => {
-  const { nameUserFront, nameUserBack, newPassword, emailUser } = req.body;
+  const { namaDepan, namaBelakang, password, emailUser } = req.body;
 
   try {
-    const newUser = await Student.signUp(
-      nameUserFront,
-      nameUserBack,
-      newPassword,
+    const dataUser = await Student.signUp(
+      namaDepan,
+      namaBelakang,
+      password,
       emailUser
     );
 
-    const token = createToken(newUser._id);
-    res.status(200).json({ newUser, token });
+    const token = createToken(dataUser._id);
+    res.status(200).json({ dataUser, token });
   } catch (e) {
     res.status(400).json({ e: e.message });
   }

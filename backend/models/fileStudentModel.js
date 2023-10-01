@@ -9,6 +9,6 @@ const FileStudent = new mongoose.Schema({
       required: [true, "Harus Memasukkan File Tugas Anda"]
    },
    authorFile: String
-});
+},{timestamps: true});
 
 module.exports = mongoose.model("FileStudet", FileStudent);
