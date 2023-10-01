@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
@@ -16,6 +15,7 @@ const login = require("./routes/login");
 const register = require("./routes/register");
 const inputFile = require("./routes/inputFile");
 const userSystem = require("./routes/userSystem");
+const emailSystem = require("./routes/emailSystem");
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,6 +31,7 @@ app.use("/api/login", login);
 app.use("/api/register", register);
 app.use("/api/user", userSystem);
 app.use("/api/file", inputFile);
+app.use ("/api/sendMail", emailSystem);
 
 
 const startServer = async () => {
