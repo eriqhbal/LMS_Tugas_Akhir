@@ -10,9 +10,12 @@ const {
   getSpesificFile,
   deleteFile,
 } = require("../Controllers/fileController");
+
+// File Student
 const {
   inputFileStudent,
   getSpesificFileStudent,
+  downloadFileStudent,
 } = require("../Controllers/studentController");
 
 // Upload
@@ -43,5 +46,7 @@ Router.route("/download/:id")
 Router.route("/fileStudent/:id")
   .get(getSpesificFileStudent)
   .post(uploadFileStudent.single("fileStudent"), inputFileStudent);
+
+Router.route("/taskDownload/:id").get(downloadFileStudent)
 
 module.exports = Router;

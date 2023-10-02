@@ -52,18 +52,35 @@ const inputFileStudent = asyncWrapper(async (req, res) => {
 const getSpesificFileStudent = async (req, res) => {
   const { id } = req.params;
 
-  const isExistFile = await FileStudent.find({ authorFile: id});
+  const isExistFile = await FileStudent.find({ authorFile: id });
 
   if (!isExistFile) {
-    return res.status(404).json({ err: "student belum mengerjakan tugas akhir" });
+    return res
+      .status(404)
+      .json({ err: "student belum mengerjakan tugas akhir" });
   } else {
     res.status(200).json(isExistFile);
   }
 };
+
+const downloadFileStudent = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+
+  const getFileStudent = await FileStudent.findOne({ _id: id });
+
+  if (!getFileStudent) {
+    return next(new Error("doesnt exist the file"));
+  }
+
+  const fileStudent = getFileStudent.fileStudent;
+  const filePath = path.join(__dirname, `../${fileStudent}`);
+  res.download(filePath);
+});
 
 module.exports = {
   getAllDataStudent,
   getDetailStudent,
   inputFileStudent,
   getSpesificFileStudent,
+  downloadFileStudent,
 };

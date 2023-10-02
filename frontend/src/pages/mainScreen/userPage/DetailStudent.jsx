@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import axios from "axios";
+
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 const DetailStudent = () => {
@@ -34,6 +36,15 @@ const DetailStudent = () => {
         setLoading(false);
       });
   }, [id]);
+
+  const handleDownloadFileStudent = async (id) => {
+      const response = await axios.get(`/api/file/taskDownload/${id}`, {responseType: 'blob'});
+      const blob = new Blob([response.data], {type: response.data.type});
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "application/pdf";
+      link.click();
+  }
 
   return (
     <div className="relative p-2">
@@ -73,26 +84,26 @@ const DetailStudent = () => {
                   <a
                     href={dataTask.linkGithub}
                     className=" ml-1 text-first underline hover:text-green-600"
-                    target="blank"
+                    target={dataTask.linkGithub !== "" ? "blank" : ""}
                   >
                     Click Here
                   </a>
                 </p>
                 <button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => handleDownloadFileStudent(dataTask._id)}
                   className="pr-3 pl-1 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-sm"
                 >
                   File Task
                 </button>
-                <p>
-                  {dataTask.createdAt}
-                </p>
+                <p>{dataTask.createdAt}</p>
               </div>
             );
           })
         ) : (
-          <p>Pelajar Belum Mengerjakan Tugas Apapun</p>
+          <div className="w-full place-self-center">
+            <p className="">Pelajar Belum Mengerjakan Tugas Apapun</p>
+          </div>
         )}
       </div>
     </div>

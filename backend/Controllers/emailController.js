@@ -1,6 +1,7 @@
 const nodeMailer = require("nodemailer");
 const Mailgen = require("mailgen");
 const smtpTransport = require("nodemailer-smtp-transport");
+const validator = require("validator");
 require("dotenv").config();
 
 // Models / Collection
@@ -10,6 +11,10 @@ const Admin = require("../models/adminModel");
 // send Password Controller
 async function emailToSendPassword(req, res) {
   const { emailUser } = req.body;
+
+  if(!validator.isEmail(emailUser)){
+    return res.status(400).json({err: "email yang anda masukkan salah"});
+  }
 
   // Create Transport
   const config = {
