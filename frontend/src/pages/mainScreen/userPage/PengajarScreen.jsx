@@ -57,7 +57,6 @@ const PengajarScreen = () => {
 
          <div className="input-file mr-10 rounded-md transition ease-in-out delay-100 hover:shadow-2xl bg-emerald-500">
             <h3 className="my-3 text-center text-white pt-2 pb-1 text-third w-2/3 mx-auto">Masukkan Materi Terbaru</h3>
-
             <form onSubmit={submitHandle} className="p-2">
                <div className="flex flex-col px-3 py-2">
                   <div className="mb-2 rounded-md">

@@ -16,6 +16,7 @@ const register = require("./routes/register");
 const inputFile = require("./routes/inputFile");
 const userSystem = require("./routes/userSystem");
 const emailSystem = require("./routes/emailSystem");
+const nilaiStudent = require("./routes/nilaiStudent");
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,6 +33,7 @@ app.use("/api/register", register);
 app.use("/api/user", userSystem);
 app.use("/api/file", inputFile);
 app.use ("/api/sendMail", emailSystem);
+app.use("/api/nilaiStudent", nilaiStudent);
 
 
 const startServer = async () => {

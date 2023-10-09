@@ -12,12 +12,19 @@ import { BiMessageDetail } from "react-icons/bi";
 const PelajarScreen = () => {
   const fileRef = useRef(null);
   const [linkGithub, setLinkGithub] = useState("");
+  const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = UseUserContext();
 
   useEffect(() => {
     setLinkGithub("");
   }, [loading]);
+
+  useEffect(() => {
+    fetch(`/api/nilaiStudent/${user.dataUser._id}`)
+      .then((res) => res.json())
+      .then((result) => setResult(result));
+  }, []);
 
   // Handle Submit File Tugas Student
   async function handleSubmitFileStudent(e) {

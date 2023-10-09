@@ -23,7 +23,7 @@ const Sidebar = () => {
          <div className='mt-10'>
             {dataLink.map((datas, i) => {
                return (
-                  <div key={i} className='mx-auto mt-10'>
+                  <div key={i} className='mt-10'>
                      <h3 className='font-bold m-3 mt-4 text-emerald-800'>{datas.title}</h3>
                      {datas.subMenu.map((data, i) => {
                         return <NavLink key={i} to={`/${data.name}`} style={({ isActivate }) => ({ backgroundColor: isActivate ? "#064e3b" : ""})} className={({ isActive }) => { return isActive ? activeLink : normalLink }}>
