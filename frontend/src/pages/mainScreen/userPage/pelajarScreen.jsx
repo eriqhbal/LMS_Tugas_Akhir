@@ -12,7 +12,8 @@ import { BiMessageDetail } from "react-icons/bi";
 const PelajarScreen = () => {
   const fileRef = useRef(null);
   const [linkGithub, setLinkGithub] = useState("");
-  const [result, setResult] = useState([]);
+  // const [result, setResult] = useState([]);
+  const [getError, setGetError] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = UseUserContext();
 
@@ -20,11 +21,15 @@ const PelajarScreen = () => {
     setLinkGithub("");
   }, [loading]);
 
-  useEffect(() => {
-    fetch(`/api/nilaiStudent/${user.dataUser._id}`)
-      .then((res) => res.json())
-      .then((result) => setResult(result));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/nilaiStudent/${user.dataUser._id}`)
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((dataResult) => {
+  //    console.log(dataResult)
+  //     });
+  // });
 
   // Handle Submit File Tugas Student
   async function handleSubmitFileStudent(e) {
@@ -79,19 +84,26 @@ const PelajarScreen = () => {
         </div>
 
         {/* Table Information Score and Messages */}
-        <div className="p-2 rounded-sm shadow-md hover:shadow-2xl transition-all border text-center">
+        <div className="p-2 px-4 rounded-sm shadow-md hover:shadow-2xl transition-all border text-center">
           <h2 className="text-center text-third text-2xl mb-2 px-4">
             Hasil Belajar Anda
           </h2>
           <div className="px-10 bg-emerald-800 text-white bg-opacity-70 rounded-sm">
             <p className="text-third text-xl text-center">Score</p>
-            <p className="text-center mt-2 text-third text-4xl">0</p>
+            <p className="text-center mt-2 text-third text-4xl">
+              {/* {result.nilaiStudent}0 */}0
+            </p>
           </div>
+          {/* <div className="text-start my-2">
+            <h2 className="text-xl font-bold">Alasan Nilai:</h2>
+            <p className="text-third bg-gray-900 text-white px-2 rounded-sm">
+              {result.alasanNilai}
+            </p>
+          </div> */}
           <button
             type="button"
             onClick={() => {}}
             className="mt-3 text-center uppercase p-2 mx-auto rounded-sm disabled:bg-zinc-300 disabled:text-black bg-emerald-700 focus:bg-emerald-900 text-white"
-            disabled={true}
           >
             Cetak Sertifikat
           </button>

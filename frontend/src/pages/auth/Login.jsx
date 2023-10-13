@@ -39,7 +39,6 @@ const Login = () => {
     });
 
     const dataJson = await response.json();
-    console.log(dataJson);
     if(!response.ok){
       setError(dataJson.error);
     } else {

@@ -33,7 +33,15 @@ const masukkanNilaiStudent = asyncWrapper(async (req, res) => {
 });
 
 const hasilNilaiStudent = async (req,res) => {
+  const {id} = req.params;
 
+  const findResult = await NilaiStudent.findOne({padaMahasiswa: id});
+
+  if(!findResult){
+    res.status(404).json({err: "not Found"});
+  }
+
+  res.status(200).json(findResult);
 }
 
 module.exports = {masukkanNilaiStudent, hasilNilaiStudent};
