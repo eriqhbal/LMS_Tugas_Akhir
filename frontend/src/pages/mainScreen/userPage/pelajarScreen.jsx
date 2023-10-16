@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // Packages
 import axios from "axios";
@@ -12,7 +12,7 @@ import { BiMessageDetail } from "react-icons/bi";
 const PelajarScreen = () => {
   const fileRef = useRef(null);
   const [linkGithub, setLinkGithub] = useState("");
-  // const [result, setResult] = useState([]);
+  const [result, setResult] = useState([]);
   const [getError, setGetError] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = UseUserContext();
@@ -21,15 +21,20 @@ const PelajarScreen = () => {
     setLinkGithub("");
   }, [loading]);
 
-  // useEffect(() => {
-  //   fetch(`/api/nilaiStudent/${user.dataUser._id}`)
-  //     .then((res) => {
-  //       return res.json();
-  //     })
-  //     .then((dataResult) => {
-  //    console.log(dataResult)
-  //     });
-  // });
+  useEffect(() => {
+    const functionFetchValue = async () => {
+      const response = await fetch(`/api/nilaiStudent/${user.dataUser._id}`);
+
+      const dataJson = await response.json();
+      if (!response.ok) {
+        setGetError(dataJson.err);
+      } else {
+        setResult(dataJson);
+      }
+    };
+
+    functionFetchValue();
+  }, []);
 
   // Handle Submit File Tugas Student
   async function handleSubmitFileStudent(e) {
@@ -45,6 +50,26 @@ const PelajarScreen = () => {
     }
   }
 
+  // Handle Download Certificate
+  const downloadCertificate = async (id) => {
+    if (Object.keys(result).length > 0) {
+      const response = await axios.get(
+        `api/nilaiStudent/downloadCertificate/${id}`,
+        {
+          responseType: "blob",
+        }
+      );
+
+      const blob = new Blob([response.data], { type: response.data.type });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "application/pdf";
+      link.click();
+    } else {
+      return;
+    }
+  };
+  console.log(result);
   return (
     <div className="pb-2">
       <div className="flex p-2 pt-5">
@@ -90,19 +115,43 @@ const PelajarScreen = () => {
           </h2>
           <div className="px-10 bg-emerald-800 text-white bg-opacity-70 rounded-sm">
             <p className="text-third text-xl text-center">Score</p>
-            <p className="text-center mt-2 text-third text-4xl">
-              {/* {result.nilaiStudent}0 */}0
-            </p>
+
+            {result?.length !== 0 ? (
+              result.map((data, i) => {
+                return (
+                  <p
+                    key={data._id}
+                    className="text-center mt-2 text-third text-xl"
+                  >
+                    Nilai ke {i + 1}: {data.nilaiStudent}
+                  </p>
+                );
+              })
+            ) : (
+              <p className="text-center mt-2 text-third text-4xl">0</p>
+            )}
           </div>
-          {/* <div className="text-start my-2">
+          <div className="text-start my-2">
             <h2 className="text-xl font-bold">Alasan Nilai:</h2>
-            <p className="text-third bg-gray-900 text-white px-2 rounded-sm">
-              {result.alasanNilai}
-            </p>
-          </div> */}
+
+            {result?.length !== 0 ? (
+              result.map((dataAlasan, i) => {
+                return (
+                  <p
+                    key={dataAlasan._id}
+                    className="text-third bg-gray-900 text-white px-2"
+                  >
+                    alasan ke {i + 1}: {dataAlasan.alasanNilai}
+                  </p>
+                );
+              })
+            ) : (
+              <p></p>
+            )}
+          </div>
           <button
             type="button"
-            onClick={() => {}}
+            onClick={() => downloadCertificate(result?._id)}
             className="mt-3 text-center uppercase p-2 mx-auto rounded-sm disabled:bg-zinc-300 disabled:text-black bg-emerald-700 focus:bg-emerald-900 text-white"
           >
             Cetak Sertifikat

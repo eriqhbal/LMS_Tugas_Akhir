@@ -32,16 +32,31 @@ const masukkanNilaiStudent = asyncWrapper(async (req, res) => {
   }
 });
 
-const hasilNilaiStudent = async (req,res) => {
-  const {id} = req.params;
+const hasilNilaiStudent = async (req, res) => {
+  const { id } = req.params;
 
-  const findResult = await NilaiStudent.findOne({padaMahasiswa: id});
+  const findResult = await NilaiStudent.find({ padaMahasiswa: id });
 
-  if(!findResult){
-    res.status(404).json({err: "not Found"});
+  if (!findResult) {
+    res.status(404).json({ err: "not Found" });
   }
 
   res.status(200).json(findResult);
-}
+};
 
-module.exports = {masukkanNilaiStudent, hasilNilaiStudent};
+const downloadCertificateStudent = asyncWrapper(async (req, res) => {
+  const {id} = req.params;
+
+  const getFile = await NilaiStudent.findOne({_id: id});
+
+  if(!getFile){
+    res.status(404).json({err: "file Doesnt Exist"});
+  }
+
+  const certificateStudent = getFile.certificateStudent;
+
+  const filePath = path.join(__dirname, `../${certificateStudent}`);
+  res.download(filePath);
+});
+
+module.exports = { masukkanNilaiStudent, hasilNilaiStudent, downloadCertificateStudent };
