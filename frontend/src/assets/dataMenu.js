@@ -5,6 +5,15 @@ import {
   AiOutlineGithub
 } from "react-icons/ai";
 
+import {
+  FaVuejs,
+  FaAngular
+} from "react-icons/fa"
+
+import {
+  PiExamDuotone
+} from "react-icons/pi"
+
 import {GrCss3} from "react-icons/gr";
 import {ImCss3} from "react-icons/im";
 
@@ -86,6 +95,23 @@ export const dataLink = [
         name: "react-js",
         subIcon: <RiReactjsFill />,
       },
+      {
+        name: "vue-js",
+        subIcon: <FaVuejs/>
+      },
+      {
+        name: "angular-js",
+        subIcon: <FaAngular/>
+      }
     ],
   },
+  {
+    title: "TUGAS AKHIR",
+    subMenu: [
+      {
+        name: "final-study",
+        subIcon: <PiExamDuotone/>
+      }
+    ]
+  }
 ];

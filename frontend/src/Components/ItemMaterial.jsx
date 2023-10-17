@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Icons
@@ -10,6 +10,7 @@ import { UseUserContext } from "../Hooks/UseUserContext";
 
 const ItemMaterial = ({ category_file }) => {
   const [dataMateri, setDataMateri] = useState([]);
+  const [dataTask, setDataTask] = useState([]);
   const navigateTo = useNavigate();
   const { user } = UseUserContext();
   const userString = JSON.stringify(user);
@@ -25,28 +26,40 @@ const ItemMaterial = ({ category_file }) => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    fetch("/api/file/taskStudent")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setDataTask(data);
+      });
+  }, []);
+
   const handleDownloadMateri = async (id) => {
-    const response = await axios.get(`/api/file/download/${id}`, {responseType: "blob"});
-    const blob = new Blob([response.data], {type: response.data.type});
-    const link = document.createElement('a');
+    const response = await axios.get(`/api/file/download/${id}`, {
+      responseType: "blob",
+    });
+    const blob = new Blob([response.data], { type: response.data.type });
+    const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
     link.download = "file/pdf";
     link.click();
-  }
+  };
 
   const handleEditMateri = async (id) => {
     navigateTo(`/materi/${id}`);
-  }
+  };
 
   const handleDeleteMateri = (id) => {
     fetch(`/api/file/material/${id}`, {
       method: "DELETE",
-    }).then(response => {
-      if(response.ok){
-        navigateTo("/home")
+    }).then((response) => {
+      if (response.ok) {
+        navigateTo("/home");
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -484,7 +497,7 @@ const ItemMaterial = ({ category_file }) => {
         <div className="p-2">
           <h1 className="w-1/2 mb-8 text-third text-3xl">Materi React JS</h1>
           <div className="grid grid-cols-3 grid-rows-2 gap-4">
-            {dataMateri.map(dataM => {
+            {dataMateri.map((dataM) => {
               return (
                 dataM.categoryFile === "reactjs" && (
                   <div
@@ -528,6 +541,146 @@ const ItemMaterial = ({ category_file }) => {
                     </div>
                   </div>
                 )
+              );
+            })}
+          </div>
+        </div>
+      ) : category_file === "vuejs" ? (
+        <div className="p-2">
+          <h1 className="w-1/2 mb-8 text-third text-3xl">Materi Vue JS</h1>
+          <div className="grid grid-cols-3 grid-rows-2 gap-4">
+            {dataMateri.map((dataM) => {
+              return (
+                dataM.categoryFile === "vuejs" && (
+                  <div
+                    key={dataM._id}
+                    className="w-62 relative rounded-md overflow-hidden shadow-md hover:bg-sky-900 hover:text-white hover:shadow-xl transition ease-in-out duration-150"
+                  >
+                    <h2 className="mb-1 p-1 text-xl text-third">
+                      {dataM.titleFile}
+                    </h2>
+                    <div className="mb-20">
+                      <p className="p-1 text-sm">{dataM.descFile}</p>
+                    </div>
+                    {/* Button */}
+                    <div className="button-edit w-full absolute bottom-1 flex justify-between p-2">
+                      {userString.includes("gmail") && (
+                        <div className="p-1 px-4 mr-14 bg-slate-300 rounded-sm">
+                          <button
+                            type="button"
+                            onClick={() => handleEditMateri(dataM._id)}
+                            className="mr-4 text-red-700 hover:text-black"
+                          >
+                            <AiFillEdit />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMateri(dataM._id)}
+                            className="hover:text-black text-blue-700"
+                          >
+                            <AiFillDelete />
+                          </button>
+                        </div>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadMateri(dataM._id)}
+                        className="text-xl h-6 w-6 mt-1 pl-[2px] rounded-sm hover:bg-black hover:text-white"
+                      >
+                        <AiOutlineDownload />
+                      </button>
+                    </div>
+                  </div>
+                )
+              );
+            })}
+          </div>
+        </div>
+      ) : category_file === "angularjs" ? (
+        <div className="p-2">
+          <h1 className="w-1/2 mb-8 text-third text-3xl">Materi Angular JS</h1>
+          <div className="grid grid-cols-3 grid-rows-2 gap-4">
+            {dataMateri.map((dataM) => {
+              return (
+                dataM.categoryFile === "angularjs" && (
+                  <div
+                    key={dataM._id}
+                    className="w-62 relative rounded-md overflow-hidden shadow-md hover:bg-sky-900 hover:text-white hover:shadow-xl transition ease-in-out duration-150"
+                  >
+                    <h2 className="mb-1 p-1 text-xl text-third">
+                      {dataM.titleFile}
+                    </h2>
+                    <div className="mb-20">
+                      <p className="p-1 text-sm">{dataM.descFile}</p>
+                    </div>
+                    {/* button */}
+                    <div className="button-edit w-full absolute bottom-1 flex justify-between p-2">
+                      {userString.includes("gmail") && (
+                        <div className="p-1 px-4 mr-14 bg-slate-300 rounded-sm">
+                          <button
+                            type="button"
+                            onClick={() => handleEditMateri(dataM._id)}
+                            className="mr-4 text-red-700 hover:text-black"
+                          >
+                            <AiFillEdit />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMateri(dataM._id)}
+                            className="hover:text-black text-blue-700"
+                          >
+                            <AiFillDelete />
+                          </button>
+                        </div>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadMateri(dataM._id)}
+                        className="text-xl h-6 w-6 mt-1 pl-[2px] rounded-sm hover:bg-black hover:text-white"
+                      >
+                        <AiOutlineDownload />
+                      </button>
+                    </div>
+                  </div>
+                )
+              );
+            })}
+          </div>
+        </div>
+      ) : category_file === "TugasAkhir" ? (
+        <div className="p-2">
+          <h2 className="w-[65%] mb-8 text-third text-3xl">
+            Tugas Akhir E-Learning Frontend Engineer
+          </h2>
+          <div className="grid grid-cols-3 grid-rows-2 gap-4">
+            {dataTask.map((dataTask) => {
+              return (
+                <div
+                  key={dataTask._id}
+                  className="p-2 w-62 relative rounded-md overflow-hidden shadow-md hover:bg-sky-900 hover:text-white hover:shadow-xl transition ease-in-out duration-150"
+                >
+                  <p>
+                    Click Project Github :{" "}
+                    <a
+                      href={dataTask.linkTugas}
+                      className="hover:bg-white hover:text-black p-2 rounded-sm text-third"
+                      target={dataTask.linkTugas !== "" ? "blank" : ""}
+                    >
+                      See The Task
+                    </a>
+                  </p>
+                  <div className="mt-4 rounded-sm overflow-hidden bg-emerald-600 text-white hover:bg-emerald-700">
+                    <button
+                      type="button"
+                      onClick={() => {}}
+                      className="px-3 py-1 w-full"
+                    >
+                      Download Soal Tugas
+                    </button>
+                  </div>
+                </div>
               );
             })}
           </div>

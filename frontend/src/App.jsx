@@ -8,7 +8,22 @@ import { UseUserContext } from './Hooks/UseUserContext';
 import { Sidebar, Navbar } from './Components';
 
 // Pages
-import { CssDasar, CssLanjut, GithubPage, Home, HtmlDasar, HtmlLanjut, JsDasar, JsLanjut, NodeJsPage, NotFoundPage, ReactJsPage } from './pages/mainScreen';
+import {
+  AngularPage,
+  CssDasar,
+  CssLanjut,
+  GithubPage,
+  Home,
+  HtmlDasar,
+  HtmlLanjut,
+  JsDasar,
+  JsLanjut,
+  NodeJsPage,
+  NotFoundPage,
+  ReactJsPage,
+  TugasAkhir,
+  VueJsPage,
+} from "./pages/mainScreen";
 import { DetailStudent } from './pages/mainScreen/userPage';
 import { Login, ForgetPass } from './pages';
 import ChangeDataPage from './pages/auth/ChangeDataPage';
@@ -67,11 +82,16 @@ const App = () => {
               {/* NodeJS Page */}
               <Route path='/node-js' element={user ? <NodeJsPage /> : <Navigate to={'/login'}/>} />
 
-              {/* React Page */}
-              <Route path='/react-js' element={user ? <ReactJsPage /> : <Navigate to={'login'}/>} />
+              {/* Framework Page */}
+              <Route path='/react-js' element={user ? <ReactJsPage /> : <Navigate to={'/login'}/>} />
+              <Route path="/vue-js" element={user ? <VueJsPage/> : <Navigate to={'/login'}/>}/>
+              <Route path='angular-js' element={user ? <AngularPage/> : <Navigate to={'/login'}/>}/>
 
               {/* Detail Materi */}
               <Route path='/materi/:id' element={user ? <DetailMateriPage/> : <Navigate to={'/login'}/>}/>
+
+              {/* Tugas Akhir */}
+              <Route path='/final-study' element={user ? <TugasAkhir/> : <Navigate to={'/login'}/>}/>
 
               <Route path='*' element={<NotFoundPage/>}/>
               <Route/>
