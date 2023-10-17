@@ -30,6 +30,24 @@ const showTask =  (req, res) => {
    })
 };
 
+const donwloadTask = asyncWrapper(async (req,res) => {
+   const {id} = req.params;
+
+   const isExist = await TaskStudent.findById({_id: id});
+
+   if(!isExist){
+      res.status(404).json({err: "File tidak ditemukan"});
+   }
+
+   try{
+      const taskFile = isExist.taskFile;
+      const filePath = path.join(__dirname, `../${taskFile}`);
+      res.download(filePath)
+   }catch(err){
+      res.status(400).json({err: "file tidak bisa di download, karena ada kesalahan"});
+   }
+})
+
 const deleteTask = asyncWrapper(async (req,res,next) => {
    const {id} = req.params;
 
@@ -41,10 +59,10 @@ const deleteTask = asyncWrapper(async (req,res,next) => {
 
    try{
       const removeFileTask = await TaskStudent.findOneAndDelete({_id: id});
-      res.status(200).json({message: "success to remove file"})
+      res.status(200).json(removeFileTask)
    }catch(e) {
       res.status(400).json(e);
    }
-})
+});
 
-module.exports = { inputTask, showTask, deleteTask };
+module.exports = { inputTask, showTask, donwloadTask, deleteTask };

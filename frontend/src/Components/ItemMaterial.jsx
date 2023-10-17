@@ -61,6 +61,25 @@ const ItemMaterial = ({ category_file }) => {
     });
   };
 
+  const handleDownloadTask = async(id) => {
+    const response = await axios.get(`/api/file/taskStudent/${id}`, {responseType: "blob"});
+    const blob = new Blob([response.data], {type: response.data.type});
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "application/pdf";
+    link.click();
+  }
+
+  const handleRemoveTask = async (id) => {
+    const response = await fetch(`/api/file/taskStudent/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      navigateTo("/home");
+    }
+  };
+
   return (
     <>
       {category_file === "html-dasar" ? (
@@ -674,12 +693,23 @@ const ItemMaterial = ({ category_file }) => {
                   <div className="mt-4 rounded-sm overflow-hidden bg-emerald-600 text-white hover:bg-emerald-700">
                     <button
                       type="button"
-                      onClick={() => {}}
+                      onClick={() => handleDownloadTask(dataTask._id)}
                       className="px-3 py-1 w-full"
                     >
                       Download Soal Tugas
                     </button>
                   </div>
+                  {userString.includes("gmail") && (
+                    <div className="mt-4 w-2/4 mx-auto rounded-sm overflow-hidden bg-emerald-600 text-white hover:bg-emerald-700">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTask(dataTask._id)}
+                        className="px-3 py-1 w-full"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}

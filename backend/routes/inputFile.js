@@ -22,7 +22,7 @@ const {
 const upload = require("../Middleware/multerFile");
 const uploadFileStudent = require("../Middleware/multerFileStudent");
 const uploadTask = require("../Middleware/multerTaskStudent");
-const { inputTask, showTask, deleteTask } = require("../Controllers/taskStudentController");
+const { inputTask, showTask, deleteTask, donwloadTask } = require("../Controllers/taskStudentController");
 
 
 
@@ -52,6 +52,6 @@ Router.route("/fileStudent/:id")
 Router.route("/taskDownload/:id").get(downloadFileStudent)
 
 Router.route("/taskStudent").get(showTask).post(uploadTask.single("fileTask"), inputTask)
-Router.route("/taskStudent/:id").delete(deleteTask)
+Router.route("/taskStudent/:id").get(donwloadTask).delete(deleteTask)
 
 module.exports = Router;
