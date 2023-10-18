@@ -7,12 +7,14 @@ import { AiOutlineDownload, AiFillEdit, AiFillDelete } from "react-icons/ai";
 
 // Hooks
 import { UseUserContext } from "../Hooks/UseUserContext";
+import { UseFileTaskContext } from "../Hooks/fileTaskUseContext";
 
 const ItemMaterial = ({ category_file }) => {
   const [dataMateri, setDataMateri] = useState([]);
-  const [dataTask, setDataTask] = useState([]);
+  // const [dataTask, setDataTask] = useState([]);
   const navigateTo = useNavigate();
   const { user } = UseUserContext();
+  const { fileTask, dispatch } = UseFileTaskContext();
   const userString = JSON.stringify(user);
 
   useEffect(() => {
@@ -26,15 +28,15 @@ const ItemMaterial = ({ category_file }) => {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    fetch("/api/file/taskStudent")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setDataTask(data);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api/file/taskStudent")
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setDataTask(data);
+  //     });
+  // }, []);
 
   const handleDownloadMateri = async (id) => {
     const response = await axios.get(`/api/file/download/${id}`, {
@@ -54,29 +56,33 @@ const ItemMaterial = ({ category_file }) => {
   const handleDeleteMateri = (id) => {
     fetch(`/api/file/material/${id}`, {
       method: "DELETE",
-    }).then((response) => {
-      if (response.ok) {
-        navigateTo("/home");
+    }).then(response => {
+      if(response.ok){
+        navigateTo("/home")
       }
-    });
+    })
+ 
   };
 
-  const handleDownloadTask = async(id) => {
-    const response = await axios.get(`/api/file/taskStudent/${id}`, {responseType: "blob"});
-    const blob = new Blob([response.data], {type: response.data.type});
-    const link = document.createElement('a');
+  const handleDownloadTask = async (id) => {
+    const response = await axios.get(`/api/file/taskStudent/${id}`, {
+      responseType: "blob",
+    });
+    const blob = new Blob([response.data], { type: response.data.type });
+    const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
     link.download = "application/pdf";
     link.click();
-  }
+  };
 
   const handleRemoveTask = async (id) => {
     const response = await fetch(`/api/file/taskStudent/${id}`, {
       method: "DELETE",
     });
 
+    const dataJson = await response.json();
     if (response.ok) {
-      navigateTo("/home");
+      dispatch({type: "REMOVE", payload: dataJson._id})
     }
   };
 
@@ -674,7 +680,7 @@ const ItemMaterial = ({ category_file }) => {
             Tugas Akhir E-Learning Frontend Engineer
           </h2>
           <div className="grid grid-cols-3 grid-rows-2 gap-4">
-            {dataTask.map((dataTask) => {
+            {fileTask?.map((dataTask) => {
               return (
                 <div
                   key={dataTask._id}

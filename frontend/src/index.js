@@ -4,6 +4,8 @@ import './index.css'
 import App from './App';
 import { UserContextProvider } from './Context/userContext';
 import { ActContextProvider } from './Context/ActContextProvider';
+import { TugasAkhirContextProvider } from './Context/TugasAkhirContext';
+import { MateriContextProvider } from './Context/MateriPelajaranContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -11,7 +13,11 @@ root.render(
   <React.StrictMode>
     <UserContextProvider>
       <ActContextProvider>
-        <App />
+        <TugasAkhirContextProvider>
+          <MateriContextProvider>
+            <App />
+          </MateriContextProvider>
+        </TugasAkhirContextProvider>
       </ActContextProvider>
     </UserContextProvider>
   </React.StrictMode>
