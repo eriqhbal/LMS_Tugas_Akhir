@@ -11,5 +11,6 @@ export {default as ReactJsPage} from "./Framework-Pages/ReactJs_page";
 export {default as VueJsPage} from "./Framework-Pages/vueJS_page";
 export {default as AngularPage} from "./Framework-Pages/AngularJs_page";
 export {default as TugasAkhir} from "./TugasAkhir";
+export {default as ChatGroup} from "./ChatGroup";
 export {default as NotFoundPage} from "./NotFoundPage";
 

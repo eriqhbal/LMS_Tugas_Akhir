@@ -80,7 +80,7 @@ const Login = () => {
                 <label htmlFor="email" className='text-white'>Email :</label>
 
                 <div className='mb-4'>
-                  <input type="email" name="mail" className='p-2 rounded-sm w-full' value={email} onChange={inputMail} placeholder='guest@gmail.com' disabled={blurThemeAndPopUpRegister}/>
+                  <input type="email" name="mail" className='p-2 rounded-sm w-full' value={email} onChange={inputMail} placeholder='Your Email' disabled={blurThemeAndPopUpRegister}/>
                 </div>
               </div>
               <div>

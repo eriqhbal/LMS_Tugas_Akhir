@@ -75,6 +75,10 @@ const PengajarScreen = () => {
     }
   };
 
+  const moveToChat = () => {
+    navigateTo("/communication-group-login");
+  }
+
   return (
     <div>
       <div className="flex py-5 px-6">
@@ -187,7 +191,7 @@ const PengajarScreen = () => {
               <h3 className="px-2 text-third">Pesan</h3>
               <button
                 type="button"
-                onClick={() => {}}
+                onClick={moveToChat}
                 className="p-2 mt-1 rounded-xl mx-auto text-2xl hover:bg-emerald-600 active:bg-emerald-700 hover:text-white transition delay-100 ease-in-out outline-2 focus:outline-none focus:ring focus:ring-emerald-800"
               >
                 {<BsChatLeftText />}

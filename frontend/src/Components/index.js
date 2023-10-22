@@ -5,3 +5,4 @@ export {default as Button} from "./Button";
 export {default as NavbarAdmin} from "./navbarUser/NavbarAdmin";
 export {default as NavbarStudent} from "./navbarUser/NavbarStudent";
 export {default as ItemMaterial} from "./ItemMaterial";
+export {default as LoginChat} from "./Chat/LoginChat";

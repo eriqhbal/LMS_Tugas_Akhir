@@ -1,10 +1,11 @@
 const express = require("express");
+const http = require("http")
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
+const server = http.createServer(app);
 // Database MongoDB
 const ConnectionDB = require("./db/ConnectionDB");
 
@@ -39,7 +40,7 @@ app.use("/api/nilaiStudent", nilaiStudent);
 const startServer = async () => {
   try {
     await ConnectionDB(process.env.URI);
-    app.listen(port, () => console.log(`Your Server Running on port ${port}`));
+    server.listen(port, () => console.log(`Your Server Running on port ${port}`));
   } catch (err) {
     console.log(err);
   }

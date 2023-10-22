@@ -71,7 +71,7 @@ export const dataLink = [
     ],
   },
   {
-    title: "REMOTE CONTROL",
+    title: "VERSION CONTROL",
     subMenu: [
       {
         name: "git-github",

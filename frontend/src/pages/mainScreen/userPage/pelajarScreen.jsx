@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import {useNavigate} from "react-router-dom";
 
 // Packages
 import axios from "axios";
@@ -14,6 +15,7 @@ const PelajarScreen = () => {
   const [linkGithub, setLinkGithub] = useState("");
   const [result, setResult] = useState([]);
   const [getError, setGetError] = useState("");
+  const navigateTo = useNavigate();
   const [loading, setLoading] = useState(false);
   const { user } = UseUserContext();
 
@@ -34,7 +36,7 @@ const PelajarScreen = () => {
     };
 
     functionFetchValue();
-  }, []);
+  }, [user.dataUser._id]);
 
   // Handle Submit File Tugas Student
   async function handleSubmitFileStudent(e) {
@@ -69,7 +71,11 @@ const PelajarScreen = () => {
       return;
     }
   };
-  console.log(result);
+ 
+  // Move to Chat Page
+  const handleMoveToChat = () => {
+    navigateTo("/communication-group-login");
+  }
   return (
     <div className="pb-2">
       <div className="flex p-2 pt-5">
@@ -163,7 +169,7 @@ const PelajarScreen = () => {
         <h2 className="text-center text-third px-5">Pesan</h2>
         <button
           type="button"
-          onClick={() => {}}
+          onClick={handleMoveToChat}
           className="mt-1 h-10 w-10 font-bold text-2xl rounded-full text-white bg-emerald-600 hover:bg-emerald-700 mb-2"
         >
           <BiMessageDetail className="mx-auto" />

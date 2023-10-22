@@ -40,7 +40,6 @@ const Register = ({ appearScreen, closeScreenComponent }) => {
 
     if (!response.ok) {
       setError(dataJson.e);
-      console.log(dataJson);
     } else {
 
       localStorage.setItem('user', JSON.stringify(dataJson));
