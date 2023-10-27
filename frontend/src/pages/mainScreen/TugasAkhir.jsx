@@ -11,6 +11,7 @@ const TugasAkhir = () => {
       return response.json();
     }).then(data => {
       dispatch({type: "SET", payload: data});
+
     });
   },[dispatch])
   

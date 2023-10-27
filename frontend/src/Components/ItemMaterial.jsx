@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+
 // Icons
 import { AiOutlineDownload, AiFillEdit, AiFillDelete } from "react-icons/ai";
 
@@ -11,7 +13,6 @@ import { UseFileTaskContext } from "../Hooks/fileTaskUseContext";
 
 const ItemMaterial = ({ category_file }) => {
   const [dataMateri, setDataMateri] = useState([]);
-  // const [dataTask, setDataTask] = useState([]);
   const navigateTo = useNavigate();
   const { user } = UseUserContext();
   const { fileTask, dispatch } = UseFileTaskContext();
@@ -27,16 +28,6 @@ const ItemMaterial = ({ category_file }) => {
       })
       .catch((err) => console.log(err));
   }, []);
-
-  // useEffect(() => {
-  //   fetch("/api/file/taskStudent")
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setDataTask(data);
-  //     });
-  // }, []);
 
   const handleDownloadMateri = async (id) => {
     const response = await axios.get(`/api/file/download/${id}`, {
@@ -56,12 +47,11 @@ const ItemMaterial = ({ category_file }) => {
   const handleDeleteMateri = (id) => {
     fetch(`/api/file/material/${id}`, {
       method: "DELETE",
-    }).then(response => {
-      if(response.ok){
-        navigateTo("/home")
+    }).then((response) => {
+      if (response.ok) {
+        navigateTo("/home");
       }
-    })
- 
+    });
   };
 
   const handleDownloadTask = async (id) => {
@@ -82,7 +72,7 @@ const ItemMaterial = ({ category_file }) => {
 
     const dataJson = await response.json();
     if (response.ok) {
-      dispatch({type: "REMOVE", payload: dataJson._id})
+      dispatch({ type: "REMOVE", payload: dataJson._id });
     }
   };
 
@@ -104,6 +94,7 @@ const ItemMaterial = ({ category_file }) => {
                     <h2 className="mb-1 p-1 text-xl text-third">
                       {dataM.titleFile}
                     </h2>
+
                     <div className="mb-20">
                       <p className="p-1 text-sm">{dataM.descFile}</p>
                     </div>
@@ -695,6 +686,11 @@ const ItemMaterial = ({ category_file }) => {
                     >
                       See The Task
                     </a>
+                    <p>
+                      {formatDistanceToNow(new Date(dataTask.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </p>
                   </p>
                   <div className="mt-4 rounded-sm overflow-hidden bg-emerald-600 text-white hover:bg-emerald-700">
                     <button

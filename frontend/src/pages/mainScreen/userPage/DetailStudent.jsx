@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 import axios from "axios";
 
@@ -160,7 +161,7 @@ const DetailStudent = () => {
                 >
                   File Task
                 </button>
-                <p>{dataTask.createdAt}</p>
+                <p>{formatDistanceToNow(new Date(dataTask.createdAt), {addSuffix: true})}</p>
               </div>
             );
           })

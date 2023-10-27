@@ -18,7 +18,7 @@ const FileSchema = new mongoose.Schema({
    file: {
       type: String,
       required: [true, "Please Provide The File Material"]
-   }
+   },
 });
 
 module.exports = mongoose.model("file", FileSchema);

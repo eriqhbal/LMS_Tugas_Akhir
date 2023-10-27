@@ -1,0 +1,32 @@
+[
+  {
+    "judulSoal": "Apakah fungsi div",
+    "jawabanSoal": [
+      {
+        "a": "untuk membuat kolom"
+      },
+      {
+        "b": "untuk membungkus komponen"
+      },
+      {
+        "c": "untuk membuat text"
+      }
+    ],
+    "kunciJawaban": "a"
+  },
+  {
+    "judulSoal": "Apakah fungsi div",
+    "jawabanSoal": [
+      {
+        "a": "untuk membuat kolom"
+      },
+      {
+        "b": "untuk membungkus komponen"
+      },
+      {
+        "c": "untuk membuat text"
+      }
+    ],
+    "kunciJawaban": "a"
+  }
+]

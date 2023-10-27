@@ -153,6 +153,7 @@ const App = () => {
               />
 
               {/* Tugas Akhir */}
+              <Route path="/quiz/:id" element={user ? <></> : <Navigate to={"/login"}/>} />
               <Route
                 path="/final-study"
                 element={user ? <TugasAkhir /> : <Navigate to={"/login"} />}
