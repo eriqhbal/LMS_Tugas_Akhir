@@ -27,6 +27,7 @@ async function emailToSendPassword(req, res) {
 
   const transporter = nodeMailer.createTransport(smtpTransport(config));
 
+  // Mailgen to make table
   const mailGenerator = new Mailgen({
     theme: "default",
     product: {
