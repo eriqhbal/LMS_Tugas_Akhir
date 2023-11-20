@@ -25,7 +25,7 @@ import {
   TugasAkhir,
   VueJsPage,
 } from "./pages/mainScreen";
-import { DetailStudent } from "./pages/mainScreen/userPage";
+import { DetailStudent, DetailTeacher } from "./pages/mainScreen/userPage";
 import { Login, ForgetPass } from "./pages";
 import ChangeDataPage from "./pages/auth/ChangeDataPage";
 import DetailMateriPage from "./pages/DetailMateriPage";
@@ -85,8 +85,9 @@ const App = () => {
                 />
               </Route>
 
-              {/* Detail Student */}
+              {/* Detail User */}
               <Route path="/student/:id" element={user && <DetailStudent />} />
+              <Route path="/pengajar/:id" element={user && <DetailTeacher/>}/>
 
               {/* HTML Page */}
               <Route

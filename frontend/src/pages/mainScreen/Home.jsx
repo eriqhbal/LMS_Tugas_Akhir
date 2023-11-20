@@ -1,6 +1,6 @@
 import React from "react";
 import { UseUserContext } from "../../Hooks/UseUserContext";
-import { PengajarScreen, PelajarScreen } from "./userPage/index";
+import { PengajarScreen, PelajarScreen, AdminScreen } from "./userPage/index";
 
 const Home = () => {
 
@@ -8,7 +8,7 @@ const Home = () => {
   const { user } = UseUserContext();
   const parseUser = JSON.stringify(user);
 
-  return parseUser.includes("student") ? <PelajarScreen /> : <PengajarScreen />
+  return parseUser.includes("student") ? <PelajarScreen /> : parseUser.includes("gmail") ? <PengajarScreen /> : <AdminScreen/>
 }
 
 export default Home
