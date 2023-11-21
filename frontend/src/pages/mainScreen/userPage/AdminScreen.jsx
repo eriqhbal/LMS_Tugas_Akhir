@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Icon
-import { FaUser, FaRegTrashAlt } from "react-icons/fa";
+import { FaUser, FaRegTrashAlt, FaCheck } from "react-icons/fa";
 
 const AdminScreen = () => {
   const [dataPengajar, setDataPengajar] = useState([]);
@@ -16,6 +16,9 @@ const AdminScreen = () => {
   const [namaBelakangPengajar, setNamaBelakangPengajar] = useState("");
   const [email, setEmail] = useState("");
   const [passwordPengajar, setPasswordPengajar] = useState("");
+  const [isOkey, setIsOkey] = useState(false);
+  const [textSuccess, setTextSuccess] = useState("");
+  const [textFailed, setTextFailed] = useState("");
 
   useEffect(() => {
     fetch("/api/user/addTeacher")
@@ -55,8 +58,49 @@ const AdminScreen = () => {
 
   const submitNewTeacher = async (e) => {
     e.preventDefault();
-  }
 
+    const response = await fetch("/api/user/addTeacher", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        namaDepan: namaDepanPengajar,
+        namaBelakang: namaBelakangPengajar,
+        emailRegister: email,
+        password: passwordPengajar,
+      }),
+    });
+
+    const dataJson = await response.json();
+    console.log(dataJson);
+
+    if (response.ok) {
+      setIsChange((prev) => !prev);
+      setIsOkey((prev) => !prev);
+      setTextSuccess(dataJson.success);
+    } else {
+      setTextFailed(dataJson.error);
+    }
+  };
+
+  const backToDisplay = () => {
+    setIsRegister((prev) => !prev);
+    setIsOkey(false);
+    setNamaDepanPengajar("");
+    setNamaBelakangPengajar("");
+    setEmail("");
+    setPasswordPengajar("");
+  };
+
+  const backToRegister = () => {
+    setIsRegister(true);
+    setIsOkey(false);
+    setNamaDepanPengajar("");
+    setNamaBelakangPengajar("");
+    setEmail("");
+    setPasswordPengajar("");
+  };
   return (
     <div className="relative">
       <div
@@ -117,43 +161,74 @@ const AdminScreen = () => {
       {isRegister && (
         <div
           className={
-            isRegister
-              ? "absolute md:w-[43%] md:top-10 md:left-80 bg-white rounded-sm shadow-xl overflow-hidden"
-              : ""
+            isRegister &&
+            "absolute md:w-[43%] md:top-10 md:left-[16rem] bg-white rounded-sm shadow-xl overflow-hidden"
           }
         >
-          <h2 className="text-center p-1 text-third mb-2">
+          <h2
+            className={isOkey ? "invisible" : "text-center p-1 text-third mb-2"}
+          >
             Register Pengajar Baru
           </h2>
-          <div className="m-1">
+          {isOkey && (
+            <div className="text-center">
+              <p className="text-first text-2xl">{textSuccess}</p>
+              <p className="mt-5 w-1/2 mx-auto">
+                {<FaCheck className="text-8xl mx-auto" />}
+              </p>
+              <div className="flex w-[70%] justify-around mx-auto mt-2">
+                <button
+                  type="button"
+                  onClick={backToRegister}
+                  className="py-1 px-4 rounded-sm bg-lime-700 hover:bg-lime-800 active:bg-lime-900 text-white text-third "
+                >
+                  Register Again
+                </button>
+                <button
+                  type="button"
+                  onClick={backToDisplay}
+                  className="py-1 px-[3rem] rounded-sm bg-slate-600 hover:bg-slate-700 active:bg-slate-800 text-white text-third"
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+          )}
+          <div className={isOkey ? "invisible" : "m-1"}>
             <form onSubmit={submitNewTeacher} className="">
               <div className="flex justify-between">
                 <input
                   type="text"
-                  className="p-2 mr-1"
+                  className="p-2 mr-1 outline outline-1 outline-black rounded-sm"
                   value={namaDepanPengajar}
                   onChange={(e) => setNamaDepanPengajar(e.target.value)}
                   placeholder="Nama Depan"
+                  required
                 />
                 <input
                   type="text"
-                  className="p-2"
+                  className="p-2 outline outline-1 outline-black rounded-sm"
                   value={namaBelakangPengajar}
                   onChange={(e) => setNamaBelakangPengajar(e.target.value)}
                   placeholder="Nama Belakang"
+                  required
                 />
               </div>
               <input
                 type="email"
-                className="p-2 mt-1 w-full"
+                className="p-2 mt-1 w-full outline outline-1 outline-black rounded-sm"
                 value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
+                required
               />
               <input
                 type="text"
-                className="mt-1 w-full p-2"
+                className="mt-1 w-full p-2 outline outline-1 outline-black rounded-sm"
                 value={passwordPengajar}
                 placeholder="Password"
+                onChange={(e) => setPasswordPengajar(e.target.value)}
+                required
               />
               <div className="w-full mt-4 text-center">
                 <button
