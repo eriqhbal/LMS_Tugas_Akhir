@@ -17,7 +17,7 @@ studentSchema.statics.signUp = async function (
   password,
   emailUser
 ) {
-  const alreadyUser = await this.findOne({ emailStudent: emailUser });
+  const alreadyUser = await this.findOne({ email: emailUser });
 
   if (alreadyUser) {
     throw Error("Email Sudah Digunakan");

@@ -42,6 +42,16 @@ const AdminScreen = () => {
 
   const deleteUser = (id, emailUser) => {
     if (emailUser.includes("student")) {
+      fetch(`/api/user/student/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((message) => {
+          setDataPelajar((prevData) => {
+            prevData.filter((dataP) => dataP._id !== id);
+          });
+          setIsChange((prevChange) => !prevChange);
+        });
     } else {
       fetch(`/api/user/removeTeacher/${id}`, {
         method: "DELETE",
@@ -155,7 +165,45 @@ const AdminScreen = () => {
               </button>
             </div>
           </div>
-          <div>Student Display</div>
+          <div className="p-2 my-4 rounded-sm shadow-lg hover:shadow-2xl transition-all">
+            <h2 className="text-xl px-5 text-third text-center rounded-sm">
+              Daftar Pelajar
+            </h2>
+            <div className="mt-3 px-3 h-40 overflow-hidden hover:overflow-auto hover:overflow-x-hidden">
+              {dataPelajar?.map((pelajar, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="mt-1 py-2 flex w-64 justify-between border border-black rounded-sm hover:bg-[#D9D9D9]"
+                  >
+                    <p className="ml-1 text-third">
+                      {pelajar.namaDepan} {pelajar.namaBelakang}
+                    </p>
+                    <div className="mr-1">
+                      <button
+                        type="button"
+                        className="mr-1 p-1 hover:text-[#064e3b] hover:bg-white rounded-sm"
+                        onClick={() => {}}
+                      >
+                        {
+                          <FaUser className="text-xl hover:text-2xl transition-all" />
+                        }
+                      </button>
+                      <button
+                        type="button"
+                        className="p-1 hover:text-red-700 hover:bg-white rounded-sm"
+                        onClick={() => deleteUser(pelajar._id, pelajar.email)}
+                      >
+                        {
+                          <FaRegTrashAlt className="text-xl hover:text-2xl transition-all" />
+                        }
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
       {isRegister && (
@@ -230,6 +278,9 @@ const AdminScreen = () => {
                 onChange={(e) => setPasswordPengajar(e.target.value)}
                 required
               />
+              {textFailed && (
+                <p className="text-center my-2 text-first">{textFailed}</p>
+              )}
               <div className="w-full mt-4 text-center">
                 <button
                   type="submit"

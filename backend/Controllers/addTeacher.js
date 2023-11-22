@@ -29,17 +29,17 @@ const addTeacherController = (req, res) => {
   const { namaDepan, namaBelakang, emailRegister, password } = req.body;
 
   if (!namaDepan || !namaBelakang || !emailRegister || !password) {
-    res.status(404).json({ err: "Form tidak boleh ada yang kosong" });
+    res.status(404).json({ error: "Form tidak boleh ada yang kosong" });
     return;
   }
 
   if (!validator.isEmail(emailRegister)) {
-    res.status(404).json({ err: "email tidak valid" });
+    res.status(404).json({ error: "email tidak valid" });
     return;
   }
 
   if (!emailRegister.includes("gmail")) {
-    res.status(400).json({ err: "Email Anda tidak valid" });
+    res.status(400).json({ error: "Email Anda tidak valid" });
     return;
   }
 
@@ -63,7 +63,7 @@ const addTeacherController = (req, res) => {
           return;
         }
       } else {
-        res.status(404).json({ err: "Your Input is wrong" });
+        res.status(404).json({ error: "Your Input is wrong" });
       }
     });
   } catch (e) {
