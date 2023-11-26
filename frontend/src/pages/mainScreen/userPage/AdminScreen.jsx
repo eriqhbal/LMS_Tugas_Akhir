@@ -40,6 +40,10 @@ const AdminScreen = () => {
     navigateTo(`/pengajar/${id}`);
   };
 
+  const profilePelajarDetail = (id) => {
+    navigateTo(`/student/certificate/${id}`);
+  }
+
   const deleteUser = (id, emailUser) => {
     if (emailUser.includes("student")) {
       fetch(`/api/user/student/${id}`, {
@@ -183,7 +187,7 @@ const AdminScreen = () => {
                       <button
                         type="button"
                         className="mr-1 p-1 hover:text-[#064e3b] hover:bg-white rounded-sm"
-                        onClick={() => {}}
+                        onClick={() => profilePelajarDetail(pelajar._id)}
                       >
                         {
                           <FaUser className="text-xl hover:text-2xl transition-all" />

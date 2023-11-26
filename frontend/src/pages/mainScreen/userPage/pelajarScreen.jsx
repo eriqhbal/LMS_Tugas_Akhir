@@ -157,7 +157,7 @@ const PelajarScreen = () => {
           </div>
           <button
             type="button"
-            onClick={() => downloadCertificate(result?._id)}
+            onClick={() => downloadCertificate(user.dataUser._id)}
             className="mt-3 text-center uppercase p-2 mx-auto rounded-sm disabled:bg-zinc-300 disabled:text-black bg-emerald-700 focus:bg-emerald-900 text-white"
           >
             Cetak Sertifikat

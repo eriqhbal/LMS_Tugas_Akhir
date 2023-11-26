@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-
 import axios from "axios";
+
+// Icons
+import {IoIosCheckmarkCircle} from "react-icons/io";
 
 const DetailStudent = () => {
   const [studentData, setStudentData] = useState([]);
@@ -11,8 +13,9 @@ const DetailStudent = () => {
   const [nilaiStudent, setNilaiStudent] = useState("");
   const [alasanNilai, setAlasanNilai] = useState("");
   const [loading, setLoading] = useState(true);
-  const certificateStudent = useRef(null);
-  const [resultResponse, setResultResponse] = useState([]);
+  const [resultResponseError, setResultResponseError] = useState([]);
+  const [resultResponseSuccess, setResultResponseSuccess] = useState([]);
+  const [resultSuccess, setResultSuccess] = useState(false);
   const { id } = useParams();
   const navigateTo = useNavigate();
 
@@ -54,20 +57,31 @@ const DetailStudent = () => {
 
   const handleNilaiStudent = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    try {
-      formData.append("nilaiStudent", nilaiStudent);
-      formData.append("alasanNilai", alasanNilai);
-      formData.append(
-        "certificateStudent",
-        certificateStudent.current.files[0]
-      );
-      const response = await axios.post(`/api/nilaiStudent/${id}`, formData);
-      setResultResponse(response);
-    } catch (err) {
-      console.log(err);
+    const response = await fetch(`/api/nilaiStudent/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nilaiStudent, alasanNilai }),
+    });
+
+    const dataJson = await response.json();
+
+    if (!response.ok) {
+      setResultResponseError(dataJson.err);
+    } else {
+      console.log(dataJson);
+      setResultResponseSuccess(dataJson.message);
+      setResultSuccess(true);
+      setResultResponseError("");
     }
   };
+
+  const doneSuccess = () => {
+    setResultSuccess(false);
+    setNilaiStudent("");
+    setAlasanNilai("");
+  }
   return (
     <div className="relative p-2">
       <h2 className="text-center text-third text-2xl">Data Detail Student</h2>
@@ -104,28 +118,33 @@ const DetailStudent = () => {
               value={alasanNilai}
               onChange={(e) => setAlasanNilai(e.target.value)}
             />
-            <input
-              type="file"
-              id="files"
-              className="hidden"
-              ref={certificateStudent}
-            />
-            <label
-              htmlFor="files"
-              className="mt-2 mx-auto px-4 py-2 bg-gray-800 text-white rounded-sm hover:cursor-pointer uppercase"
-            >
-              Kirim Sertifikat
-            </label>
             <button
               type="submit"
               className="mt-3 mb-2 mx-5 p-2 rounded-sm bg-gray-900 text-white hover:bg-green-700 active:bg-green-800"
             >
               Enter
             </button>
-            {resultResponse && <p>{resultResponse.statusText}</p>}
+            {resultResponseError && <p>{resultResponseError}</p>}
           </form>
         </div>
       </div>
+      {resultSuccess && (
+        <div className="absolute z-50 bg-white p-2 md:left-[15rem] md:top-4 shadow-2xl rounded-md border border-green-800">
+          <p className="text-black text-third px-7 text-3xl">
+            {resultResponseSuccess}
+          </p>
+          <p className="my-3">{<IoIosCheckmarkCircle className="text-4xl mx-auto"/>}</p>
+          <div className="text-center mt-3">
+            <button
+              type="button"
+              onClick={doneSuccess}
+              className="px-10 py-2 rounded-sm bg-green-700 active:bg-green-800 text-white"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="mt-2 w-1/2 border border-x-2 border-emerald-900" />
 
@@ -161,7 +180,11 @@ const DetailStudent = () => {
                 >
                   File Task
                 </button>
-                <p>{formatDistanceToNow(new Date(dataTask.createdAt), {addSuffix: true})}</p>
+                <p>
+                  {formatDistanceToNow(new Date(dataTask.createdAt), {
+                    addSuffix: true,
+                  })}
+                </p>
               </div>
             );
           })

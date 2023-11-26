@@ -11,9 +11,6 @@ const nilaiStudentSchema = new mongoose.Schema({
       type: String,
       required: true
    },
-   certificateStudent: {
-      type: String,
-   },
    padaMahasiswa: {
       type: String
    }

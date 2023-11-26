@@ -31,8 +31,10 @@ const getDetailStudent = async (req, res) => {
 
   if (!isExist) {
     res.status(404).json({ err: "Data Murid Tidak Ada" });
+    return;
   } else {
     res.status(200).json(isExist);
+    return
   }
 };
 
