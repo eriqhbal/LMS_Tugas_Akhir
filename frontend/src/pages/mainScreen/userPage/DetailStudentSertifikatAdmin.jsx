@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+// icons
+import { TbCircleCheckFilled } from "react-icons/tb";
+
 const DetailStudentSertifikatAdmin = () => {
   const [dataStudent, setDataStudent] = useState({});
   const [gradeStudent, setGradeStudent] = useState([]);
@@ -11,6 +14,7 @@ const DetailStudentSertifikatAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
   const [messageSuccess, setMessageSuccess] = useState("");
+  const [messageFail, setMessageFail] = useState("");
   const { id } = useParams();
   const navigateTo = useNavigate();
 
@@ -64,13 +68,19 @@ const DetailStudentSertifikatAdmin = () => {
         `/api/nilaiStudent/certificateForStudent/${id}`,
         addData
       );
-      if(response.status === 201) {
+      if (response.status === 201) {
+        console.log(response);
         setMessageSuccess(response.data.success);
         setIsSuccess(true);
+        setMessageFail("");
       }
     } catch (e) {
-      console.log("Anda Belum Menginputkan Sertifikat!");
+      setMessageFail("Anda Belum menginputkan sertifikat");
     }
+  }
+
+  const doneSuccess = () => {
+    setIsSuccess(false);
   }
 
   return handleErrMessage !== "" ? (
@@ -122,18 +132,17 @@ const DetailStudentSertifikatAdmin = () => {
                       Tidak bisa menginputkan sertifikat, nilai kurang dari 75
                     </p>
                   ) : (
-                    <div className="text-center w-1/3 mx-auto mt-2">
+                    <div className="text-center w-1/2 mx-auto mt-2">
                       <form onSubmit={handleSubmitCertificate}>
                         <input
                           type="file"
                           id="files"
                           className="hidden"
                           ref={sertifikatStudentRef}
-                          required
                         />
                         <label
                           htmlFor="files"
-                          className="px-5 bg-gray-800 text-white rounded-sm hover:cursor-pointer uppercase"
+                          className="px-16 bg-gray-800 text-white rounded-sm hover:cursor-pointer uppercase"
                         >
                           Kirim Sertifikat
                         </label>
@@ -144,15 +153,28 @@ const DetailStudentSertifikatAdmin = () => {
                           Enter
                         </button>
                       </form>
+                      {messageFail && <p className="mt-2">{messageFail}</p>}
                     </div>
                   )}
                 </div>
               </>
-              
             )}
           </>
         )}
       </div>
+      {isSuccess && (
+        <div className=" absolute z-50 bg-white top-20 md:left-[16rem] rounded-md shadow-2xl border border-green-800">
+          <p className="px-20 text-xl text-third mt-1">{messageSuccess}</p>
+          <p className="my-3">
+            {<TbCircleCheckFilled className="text-4xl mx-auto" />}
+          </p>
+          <div className="text-center mt-3 mb-2 transition">
+            <button type="button" onClick={doneSuccess} className="px-10 py-2 rounded-sm bg-green-700 active:bg-green-800 text-white">
+              Done!
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

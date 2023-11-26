@@ -10,11 +10,7 @@ const asyncWrapper = require("../Middleware/asyncWrapper");
 const masukkanCertificateStudent = asyncWrapper(async (req, res) => {
   const { id } = req.params;
   const certificateStudent = req.file.path;
-
-  if (!certificateStudent === null) {
-    res.status(400).json({ error: "Belum Menginputkan Sertifikat" });
-    return;
-  }
+  
   try {
     const sendCertificate = await SendCertificate.create({
       certificateStudent: certificateStudent,
@@ -22,7 +18,7 @@ const masukkanCertificateStudent = asyncWrapper(async (req, res) => {
     });
     res.status(201).json({success: "Sertifikat Berhasil Di-inputkan!"});
   } catch (err) {
-    res.status(400).json({ err: err.message });
+    res.status(400).json({ err: "tidak bisa menginputkan sertifikat mungkin tidak ada file" });
   }
 });
 
