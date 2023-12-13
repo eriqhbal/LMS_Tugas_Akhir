@@ -17,12 +17,16 @@ const ChatGroup = () => {
     <div>
       <ChatEngine
         height="100vh"
-        projectID="d68d4c71-d89d-46a2-9083-b58b09b4ae90"
+        projectID="4d62a489-194c-4352-bad7-095b8f9d4451"
         userName={localStorage.getItem("username")}
         userSecret={localStorage.getItem("password")}
       />
-      <div className='text-center p-2'>
-        <button type="button" onClick={handleCloseChat} className="px-5 py-2 bg-slate-700 text-white">
+      <div className="text-center p-2">
+        <button
+          type="button"
+          onClick={handleCloseChat}
+          className="px-5 py-2 bg-slate-700 text-white"
+        >
           back
         </button>
       </div>

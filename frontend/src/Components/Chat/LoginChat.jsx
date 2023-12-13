@@ -13,7 +13,7 @@ const LoginChat = () => {
     e.preventDefault();
 
     const authObject = {
-      "Project-ID": "d68d4c71-d89d-46a2-9083-b58b09b4ae90",
+      "Project-ID": "4d62a489-194c-4352-bad7-095b8f9d4451",
       "User-Name": username,
       "User-Secret": password,
     };

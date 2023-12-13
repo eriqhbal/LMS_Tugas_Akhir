@@ -84,7 +84,7 @@ const DetailStudentSertifikatAdmin = () => {
   }
 
   return handleErrMessage !== "" ? (
-    <p>{handleErrMessage}</p>
+    <p className="text-center text-2xl text-third p-2">{handleErrMessage}</p>
   ) : (
     <div className="p-2 relative">
       <h2 className="text-center p-2 text-third text-2xl">Detail Student</h2>
