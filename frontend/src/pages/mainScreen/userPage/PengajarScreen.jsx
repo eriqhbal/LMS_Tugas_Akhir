@@ -5,10 +5,12 @@ import axios from "axios";
 // Icons
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { BsChatLeftText } from "react-icons/bs";
+import { FaSortAlphaDown, FaSortAlphaUp } from "react-icons/fa";
 
 const PengajarScreen = () => {
   const [titleFile, setTitleFile] = useState("");
   const [descFile, setDescFile] = useState("");
+  const [countData, setCountData] = useState(10);
   const [dataStudent, setDataStudent] = useState([]);
   const [categoryFile, setCategoryFile] = useState("html-dasar");
   const [linkGithubTask, setLinkGithubTask] = useState("");
@@ -24,7 +26,8 @@ const PengajarScreen = () => {
         return res.json();
       })
       .then((dataJson) => {
-        setDataStudent(dataJson.dataStudent);
+        setDataStudent(dataJson);
+        setCountData(10);
       });
   }, []);
 
@@ -35,7 +38,7 @@ const PengajarScreen = () => {
 
   useEffect(() => {
     setLinkGithubTask("");
-  },[loadingTask])
+  }, [loadingTask]);
 
   const submitHandle = async (e) => {
     e.preventDefault();
@@ -62,7 +65,7 @@ const PengajarScreen = () => {
   const submitTask = async (e) => {
     e.preventDefault();
     try {
-      setLoadinTask(true)
+      setLoadinTask(true);
       const formData = new FormData();
       formData.append("linkProjectGithub", linkGithubTask);
       formData.append("fileTask", taskRef.current.files[0]);
@@ -70,15 +73,67 @@ const PengajarScreen = () => {
     } catch (err) {
       setLoadinTask(true);
       console.log(err);
-    }finally{
+    } finally {
       setLoadinTask(false);
     }
   };
 
   const moveToChat = () => {
     navigateTo("/communication-group-login");
+  };
+
+  const handleSort = async (whatSort) => {
+    const manyData = dataStudent.length;
+
+    if(whatSort === "ASC"){
+      const response = await fetch("/api/user/ascendingData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ manyData, sortData: "1"})
+      });
+
+      const parseData = await response.json();
+
+      if(response.ok){
+        setDataStudent(parseData);
+      }
+    } else if(whatSort === "DESC"){
+      const response = await fetch("/api/user/ascendingData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ manyData, sortData: "-1"})
+      });
+
+      const parseData = await response.json();
+
+      if(response.ok){
+        setDataStudent(parseData);
+      }
+    }
+
   }
 
+  const loadDatas = async () => {
+    setCountData((prev) => prev + 5);
+    console.log(countData)
+    const getData = await fetch("/api/user/loadData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ countData }),
+    });
+
+    const response = await getData.json();
+
+    if (getData.ok) {
+      setDataStudent(response);
+    }
+  };
   return (
     <div>
       <div className="flex py-5 px-6">
@@ -178,8 +233,28 @@ const PengajarScreen = () => {
                 </div>
               );
             })}
+            {countData >= dataStudent.length + 6 ? (
+              ""
+            ) : (
+              <div className="w-1/3 mx-auto hover:bg-black hover:text-white transition-all rounded-sm overflow-hidden">
+                <button type="button" className="w-full" onClick={loadDatas}>
+                  More
+                </button>
+              </div>
+            )}
           </div>
-
+          <div className="w-1/3 mt-2 mx-auto flex justify-evenly">
+            <div className="w-[20px]">
+              <button type="button" className="w-full" onClick={() => handleSort("ASC")}>
+                {<FaSortAlphaDown />}
+              </button>
+            </div>
+            <div className="w-[20px]">
+              <button type="button" className="w-full" onClick={() => handleSort("DESC")}>
+                {<FaSortAlphaUp />}
+              </button>
+            </div>
+          </div>
           <div className="Total-pelajar flex mt-3 p-3 justify-evenly">
             <div className="p-2 rounded-md shadow-md">
               <h3 className="px-2 text-third">Jumlah Pelajar</h3>

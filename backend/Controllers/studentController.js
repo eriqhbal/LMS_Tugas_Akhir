@@ -11,18 +11,55 @@ const asyncWrapper = require("../Middleware/asyncWrapper");
 const getAllDataStudent = async (req, res) => {
   try {
     const dataStudent = await Student.find();
+    const isMoreFive = await Student.find().count();
 
     if (!dataStudent) {
-      req.status(404).json({ err: "There is no data student" });
+      res.status(404).json({ err: "There is no data student" });
       return;
     }
-    res.status(200).json({ dataStudent });
-    return;
+
+    if (isMoreFive > 5) {
+      const getLimit = await Student.find().limit(5);
+      res.status(200).json(getLimit);
+      return;
+    } else {
+      res.status(200).json(dataStudent);
+      return;
+    }
   } catch (err) {
     res.status(400).json({ err: err.message });
     return;
   }
 };
+
+const loadDataStudent = async (req, res) => {
+  const { countData } = req.body;
+
+  const parseCount = parseInt(countData)
+
+  const allData = await Student.find();
+  const manyData = await Student.find().count();
+  const addData = await Student.find().limit(parseCount);
+
+  if(parseCount > manyData){
+    res.status(200).json(allData);
+    return;
+  } else {
+  res.status(200).json(addData);
+  return;
+  }
+}
+
+const ascSortingData = async (req, res) => {
+  const { sortData, manyData } = req.body;
+
+  const sortDataParse = parseInt(sortData);
+  const manyDataParse = parseInt(manyData);
+  
+  const isExisttudentAsc = await Student.find().limit(manyDataParse).sort({ namaDepan: sortDataParse});
+
+  res.json(isExisttudentAsc)
+}
 
 const getDetailStudent = async (req, res) => {
   const id = req.params.id;
@@ -34,28 +71,26 @@ const getDetailStudent = async (req, res) => {
     return;
   } else {
     res.status(200).json(isExist);
-    return
+    return;
   }
 };
 
-const removeStudent = async (req,res) => {
-  const {id} = req.params;
+const removeStudent = async (req, res) => {
+  const { id } = req.params;
 
-  const findStudent = await Student.findOne({_id: id});
+  const findStudent = await Student.findOne({ _id: id });
 
-  if(!findStudent){
-    res.status(404).json({err: "Akun Tidak Ditemukan"});
+  if (!findStudent) {
+    res.status(404).json({ err: "Akun Tidak Ditemukan" });
   }
 
-try{
- const removeStudentAkun = await Student.findByIdAndDelete({_id: id});
-  res.status(200).json({success: "Akun Berhasil Dihapus"});
-} catch(e) {
-  res.status(404).json({e: e.message});
-}
-
-  
-}
+  try {
+    const removeStudentAkun = await Student.findByIdAndDelete({ _id: id });
+    res.status(200).json({ success: "Akun Berhasil Dihapus" });
+  } catch (e) {
+    res.status(404).json({ e: e.message });
+  }
+};
 
 const inputFileStudent = asyncWrapper(async (req, res) => {
   const { id } = req.params;
@@ -67,9 +102,9 @@ const inputFileStudent = asyncWrapper(async (req, res) => {
       fileStudent: fileStudent,
       authorFile: id,
     });
-    res.status(201).json(createFile);
+    res.status(201).json({ msg: "Jawaban TA berhasil terkirim!" });
   } catch (err) {
-    res.status(404).json(err);
+    res.status(400).json(err);
   }
 });
 
@@ -103,7 +138,9 @@ const downloadFileStudent = asyncWrapper(async (req, res, next) => {
 
 module.exports = {
   getAllDataStudent,
+  loadDataStudent,
   getDetailStudent,
+  ascSortingData,
   removeStudent,
   inputFileStudent,
   getSpesificFileStudent,

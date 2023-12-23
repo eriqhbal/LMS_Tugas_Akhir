@@ -13,8 +13,8 @@ const inputTask = asyncWrapper(async (req, res) => {
   }
 
   try{
-   const createTaskFile = await TaskStudent.create({linkTugas: linkProjectGithub, taskFile: fileTask});
-   res.status(201).json(createTaskFile);
+   await TaskStudent.create({linkTugas: linkProjectGithub, taskFile: fileTask});
+   res.status(201).json({msg: "Task Berhasil Dikirim!"});
   }catch(e){
    res.status(400).json(e);
   }

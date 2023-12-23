@@ -3,9 +3,12 @@ const Routes = express.Router();
 
 // Controllers
 const {
+  limitStudent,
   getAllDataStudent,
   getDetailStudent,
   removeStudent,
+  loadDataStudent,
+  ascSortingData,
 } = require("../Controllers/studentController");
 const updateDataUser = require("../Controllers/updateController");
 const {
@@ -14,6 +17,10 @@ const {
   getAllTeacher,
 } = require("../Controllers/addTeacher");
 const getSpesificTeacher = require("../Controllers/teacherController");
+
+Routes.route('/loadData').post(loadDataStudent);
+
+Routes.route('/ascendingData').post(ascSortingData);
 
 Routes.route("/students")
   .get(getAllDataStudent)
