@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Hooks
 import { UseUserContext } from "./Hooks/UseUserContext";
+import { useActContext } from "./Context/ActContextProvider";
 
 // Component
 import { Sidebar, Navbar, LoginChat } from "./Components";
@@ -32,16 +33,17 @@ import DetailMateriPage from "./pages/DetailMateriPage";
 
 const App = () => {
   const { user } = UseUserContext();
+  const { activeMenu } = useActContext();
 
   return (
     <BrowserRouter>
       <div className={user && "flex relative"}>
         {user && (
-          <div className="mt-4 fixed sidebar ml-3 shadow-md bg-white">
+          <div className={ activeMenu && "mt-4 fixed sidebar ml-3 shadow-md bg-white z-50"}>
             <Sidebar />
           </div>
         )}
-        <div className={user && "md:ml-80 min-h-screen w-full"}>
+        <div className={user && activeMenu ? "transition-all md:ml-80 min-h-screen w-full" : user && "transition-all min-h-screen w-full"}>
           {user && (
             <div className="p-2 w-full">
               <Navbar />

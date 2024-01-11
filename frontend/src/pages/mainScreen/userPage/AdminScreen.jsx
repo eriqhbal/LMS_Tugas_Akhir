@@ -32,7 +32,7 @@ const AdminScreen = () => {
         return res.json();
       })
       .then((dataStudent) => {
-        setDataPelajar(dataStudent.dataStudent);
+        setDataPelajar(dataStudent);
       });
   }, [isChange]);
 

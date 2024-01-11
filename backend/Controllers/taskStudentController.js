@@ -8,15 +8,18 @@ const inputTask = asyncWrapper(async (req, res) => {
   const { linkProjectGithub } = req.body;
   const fileTask = req.file.path;
 
-  if(!linkProjectGithub || !fileTask) {
+  if(!linkProjectGithub || fileTask === undefined) {
    res.status(400).json({err: "File Tugas Harus Lengkap"});
+   return;
   }
 
   try{
    await TaskStudent.create({linkTugas: linkProjectGithub, taskFile: fileTask});
    res.status(201).json({msg: "Task Berhasil Dikirim!"});
+   return;
   }catch(e){
    res.status(400).json(e);
+   return;
   }
 });
 

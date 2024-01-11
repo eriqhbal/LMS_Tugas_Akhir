@@ -57,6 +57,7 @@ const downloadCertificateStudent = asyncWrapper(async (req, res) => {
 
   if (!getFile) {
     res.status(404).json({ err: "file Doesnt Exist" });
+    return;
   }
 
   const certificateStudent = getFile.certificateStudent;

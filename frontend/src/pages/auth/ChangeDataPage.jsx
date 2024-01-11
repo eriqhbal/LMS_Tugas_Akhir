@@ -7,6 +7,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 
 // context Hooks
 import { UseUserContext } from '../../Hooks/UseUserContext';
+import { useActContext } from '../../Context/ActContextProvider';
 
 
 const ChangeDataPage = () => {
@@ -15,9 +16,9 @@ const ChangeDataPage = () => {
   const [namaBelakang, setNamaBelakang] = useState("");
   const [passwordUser, setPasswordUser] = useState("");
 
-
   const { id } = useParams();
   const { user,dispatch } = UseUserContext();
+  const { activeMenu } = useActContext();
   const userString = JSON.stringify(user);
   const navigateTo = useNavigate();
 
@@ -64,9 +65,9 @@ const ChangeDataPage = () => {
 
   return (
     <div className='relative p-5'>
-      <button type="button" onClick={() => navigateTo("/home")} className='absolute ml-16 mt-1 p-1 rounded-sm bg-green-700 text-white flex items-center px-4 hover:bg-green-800'><AiOutlineArrowLeft /><p className='ml-1'>Back Home</p></button>
+      <button type="button" onClick={() => navigateTo("/home")} className={activeMenu ? 'absolute ml-16 mt-1 p-1 rounded-sm bg-green-700 text-white flex items-center px-4 hover:bg-green-800' : 'rounded-sm bg-green-700 text-white flex items-center hover:bg-green-800 p-1 ml-20'}><AiOutlineArrowLeft /><p className='ml-1'>Back Home</p></button>
 
-      <div className='p-3 w-1/2 mx-auto rounded-md overflow-hidden shadow-xl'>
+      <div className={activeMenu ? 'p-3 w-1/2 mx-auto rounded-md overflow-hidden shadow-xl' : 'mt-[30px]'}>
         <h2 className='mb-3 text-center text-third text-2xl'>Ubah Data</h2>
 
         <form onSubmit={handleChangeData}>

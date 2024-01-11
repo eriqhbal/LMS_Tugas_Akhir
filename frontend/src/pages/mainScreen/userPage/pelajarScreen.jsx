@@ -6,6 +6,7 @@ import axios from "axios";
 
 // Import hooks
 import { UseUserContext } from "../../../Hooks/UseUserContext";
+import { useActContext } from "../../../Context/ActContextProvider";
 
 // Icons
 import { BiMessageDetail } from "react-icons/bi";
@@ -15,9 +16,11 @@ const PelajarScreen = () => {
   const [linkGithub, setLinkGithub] = useState("");
   const [result, setResult] = useState([]);
   const [getError, setGetError] = useState("");
+  const [notCertificate, setNotCertificate] = useState("");
   const navigateTo = useNavigate();
   const [loading, setLoading] = useState(false);
   const { user } = UseUserContext();
+  const { activeMenu } = useActContext();
 
   useEffect(() => {
     setLinkGithub("");
@@ -28,10 +31,15 @@ const PelajarScreen = () => {
       const response = await fetch(`/api/nilaiStudent/${user.dataUser._id}`);
 
       const dataJson = await response.json();
+
+      const higherScore = dataJson?.reduce((acc, curr) => {
+        return curr.nilaiStudent > acc.nilaiStudent ? curr : acc;
+      });
+
       if (!response.ok) {
         setGetError(dataJson.err);
       } else {
-        setResult(dataJson);
+        setResult(higherScore);
       }
     };
 
@@ -61,12 +69,15 @@ const PelajarScreen = () => {
           responseType: "blob",
         }
       );
-
+      if(response.status) {
       const blob = new Blob([response.data], { type: response.data.type });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = "application/pdf";
       link.click();
+      } else {
+        setNotCertificate(response.err);
+      }
     } else {
       return;
     }
@@ -78,7 +89,7 @@ const PelajarScreen = () => {
   }
   return (
     <div className="pb-2">
-      <div className="flex p-2 pt-5">
+      <div className={activeMenu === true ? "flex p-2 pt-5" : "flex "}>
         {/* Form Input Tugas */}
         <div className="ml-16 mr-10 p-1 rounded-sm overflow-hidden border shadow-md hover:shadow-2xl transition ease-in-out delay-100">
           <h2 className="text-third text-center text-xl">
@@ -95,6 +106,7 @@ const PelajarScreen = () => {
                 onChange={(e) => setLinkGithub(e.target.value)}
                 className="mt-3 ml-1 mb-1 p-2 outline-none w-[80%] border border-emerald-700 focus:ring-1 rounded-sm placeholder:text-sm"
                 placeholder="Masukkan Link Github Projek"
+                required
               />
               <div className="mt-2">
                 <input
@@ -122,17 +134,10 @@ const PelajarScreen = () => {
           <div className="px-10 bg-emerald-800 text-white bg-opacity-70 rounded-sm">
             <p className="text-third text-xl text-center">Score</p>
 
-            {result?.length !== 0 ? (
-              result.map((data, i) => {
-                return (
-                  <p
-                    key={data._id}
-                    className="text-center mt-2 text-third text-xl"
-                  >
-                    Nilai ke {i + 1}: {data.nilaiStudent}
-                  </p>
-                );
-              })
+            {result ? (
+              <p className="text-center mt-2 text-third text-xl">
+                Nilai: {result.nilaiStudent}
+              </p>
             ) : (
               <p className="text-center mt-2 text-third text-4xl">0</p>
             )}
@@ -140,19 +145,12 @@ const PelajarScreen = () => {
           <div className="text-start my-2">
             <h2 className="text-xl font-bold">Alasan Nilai:</h2>
 
-            {result?.length !== 0 ? (
-              result.map((dataAlasan, i) => {
-                return (
-                  <p
-                    key={dataAlasan._id}
-                    className="text-third bg-gray-900 text-white px-2"
-                  >
-                    alasan ke {i + 1}: {dataAlasan.alasanNilai}
-                  </p>
-                );
-              })
+            {result ? (
+              <p className="text-third bg-gray-900 text-white px-2">
+                alasan: {result.alasanNilai}
+              </p>
             ) : (
-              <p></p>
+              ""
             )}
           </div>
           <button
@@ -162,6 +160,9 @@ const PelajarScreen = () => {
           >
             Cetak Sertifikat
           </button>
+          {notCertificate ? (
+            <p className="text-center">{notCertificate}</p>
+          ): ""}
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // icon
 import { BsXLg } from "react-icons/bs";
 import { UseUserContext } from '../../Hooks/UseUserContext';
+import { useActContext } from '../../Context/ActContextProvider';
 
 const Register = ({ appearScreen, closeScreenComponent }) => {
   const [namaDepan, setNameUserFront] = useState("");
@@ -13,6 +14,7 @@ const Register = ({ appearScreen, closeScreenComponent }) => {
   const [emailUser, setEmailUser] = useState("");
   const [buttonSubmit, setButtonSubmit] = useState(true);
   const [error, setError] = useState(null);
+  const { screenSize, setScreenSize } = useActContext();
 
   const navigate = useNavigate();
 
@@ -24,6 +26,13 @@ const Register = ({ appearScreen, closeScreenComponent }) => {
     setNewPassword('');
     setEmailUser('');
   }, [buttonSubmit])
+
+  useEffect(() => {
+    const resizeS = () => setScreenSize(window.innerWidth);
+    window.addEventListener('resize', resizeS);
+    resizeS();
+    return () => window.removeEventListener('resize', resizeS);
+  },[setScreenSize])
 
   async function submitNewData(e) {
     e.preventDefault();
@@ -55,7 +64,7 @@ const Register = ({ appearScreen, closeScreenComponent }) => {
   }
 
   return appearScreen === true ? (
-    <div className='absolute xl:inset-x-[400px] top-24 w-1/3 z-30 bg-white rounded-xl border border-spacing-x-7 overflow-hidden shadow-sm'>
+    <div className={screenSize >= 900 ? 'absolute xl:inset-x-[400px] top-24 w-1/3 z-30 bg-white rounded-xl border border-spacing-x-7 overflow-hidden shadow-sm' : 'mt-20'}>
       <div className='relative py-4 flex'>
         <h1 className='font-bold text-2xl ml-4 text-third'>Register New Account</h1>
         <button type="button" className='absolute right-3 top-2' onClick={closeScreen}><BsXLg /></button>

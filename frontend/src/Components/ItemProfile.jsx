@@ -37,7 +37,7 @@ const ItemProfile = () => {
     cancelClicked("userProfile");
   }
   return (
-    <div className="z-50 absolute w-96 top-20 right-32 p-4 shadow-md rounded-lg bg-slate-100">
+    <div className="z-50 absolute right-1 top-16 p-8 rounded-lg w-96 bg-slate-100">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-xl text-third">Profile Settings</h3>
         <Button

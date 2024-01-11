@@ -35,6 +35,7 @@ router
             }
           } else {
             res.status(404).json({ error: "Email Anda Belum Terdaftar!" });
+            return;
           }
         }
       });
@@ -45,8 +46,10 @@ router
             if (dataUser.password == password) {
               const token = createToken(dataUser._id);
               res.status(200).json({dataUser, token});
+              return;
             } else {
               res.status(400).json({ error: "Email Atau Password Anda Salah" });
+              return;
             }
           } else {
             res.status(400).json({ error: "Data Tidak Ditemukan" });

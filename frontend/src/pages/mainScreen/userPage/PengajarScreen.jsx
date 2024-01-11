@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// Context
+import { useActContext } from "../../../Context/ActContextProvider";
+
 // Icons
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { BsChatLeftText } from "react-icons/bs";
@@ -15,6 +18,7 @@ const PengajarScreen = () => {
   const [categoryFile, setCategoryFile] = useState("html-dasar");
   const [linkGithubTask, setLinkGithubTask] = useState("");
   const [loading, setLoading] = useState(false);
+  const { activeMenu } = useActContext();
   const [loadingTask, setLoadinTask] = useState(false);
   const fileRef = useRef(null);
   const taskRef = useRef(null);
@@ -136,8 +140,20 @@ const PengajarScreen = () => {
   };
   return (
     <div>
-      <div className="flex py-5 px-6">
-        <div className="input-file mr-10 rounded-md transition ease-in-out delay-100 hover:shadow-2xl bg-emerald-500">
+      <div
+        className={
+          activeMenu === false
+            ? "md:flex md:justify-around md:py-5 md:px-6"
+            : "md:flex md:py-5 md:px-6"
+        }
+      >
+        <div
+          className={
+            activeMenu
+              ? "input-file mr-15 md:mr-10 rounded-md transition ease-in-out delay-100 hover:shadow-2xl bg-emerald-500"
+              : "input-file mr-15  rounded-md transition ease-in-out delay-100 hover:shadow-2xl bg-emerald-500"
+          }
+        >
           <h3 className="my-3 text-center text-white pt-2 pb-1 text-third w-2/3 mx-auto">
             Masukkan Materi Terbaru
           </h3>
@@ -151,22 +167,23 @@ const PengajarScreen = () => {
                   value={titleFile}
                   onChange={(e) => setTitleFile(e.target.value)}
                   className="p-3 w-full rounded-md"
+                  required
                 />
               </div>
               <div className="mb-2 rounded-md">
                 <textarea
-                  rows="5"
-                  cols="45"
                   placeholder="Deskripsi"
                   value={descFile}
                   onChange={(e) => setDescFile(e.target.value)}
-                  className="mb-0 p-3 rounded-md "
+                  className="mb-0 p-3 rounded-md w-full"
+                  required
                 ></textarea>
               </div>
               <div className="rounded-md p-[0.5px]">
                 <select
                   className="w-full p-2 rounded-md"
                   onChange={(e) => setCategoryFile(e.target.value)}
+                  required
                 >
                   <option value="html-dasar">HTML - DASAR</option>
                   <option value="html-lanjut">HTML - LANJUTAN</option>
@@ -192,6 +209,7 @@ const PengajarScreen = () => {
                         file:bg-violet-50 file:text-emerald-700
                         hover:file:bg-violet-100
                      "
+                  required
                 />
               </div>
               <button
@@ -245,12 +263,20 @@ const PengajarScreen = () => {
           </div>
           <div className="w-1/3 mt-2 mx-auto flex justify-evenly">
             <div className="w-[20px]">
-              <button type="button" className="w-full" onClick={() => handleSort("ASC")}>
+              <button
+                type="button"
+                className="w-full"
+                onClick={() => handleSort("ASC")}
+              >
                 {<FaSortAlphaDown />}
               </button>
             </div>
             <div className="w-[20px]">
-              <button type="button" className="w-full" onClick={() => handleSort("DESC")}>
+              <button
+                type="button"
+                className="w-full"
+                onClick={() => handleSort("DESC")}
+              >
                 {<FaSortAlphaUp />}
               </button>
             </div>
@@ -274,43 +300,89 @@ const PengajarScreen = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="p-2 w-1/2 mx-auto my-2 shadow-lg hover:shadow-2xl rounded-md transition-all">
-        <h2 className="text-center mb-2 text-third text-xl">
-          Masukkan Tugas Akhir
-        </h2>
-        <form onSubmit={submitTask}>
-          <div className="grid w-[65%] overflow-hidden">
-            <label className="text-third">Masukkan Tugas Project Github</label>
-            <input
-              type="text"
-              className="p-2 outline-none border border-gray-900 rounded-sm"
-              value={linkGithubTask}
-              onChange={(e) => setLinkGithubTask(e.target.value)}
-              placeholder="Link Project Github"
-            />
-          </div>
-          <div className="grid w-[65%] mt-3 overflow-hidden">
-            <label className="text-third">Masukkan File Tugas</label>
-            <input
-              type="file"
-              className="block w-full text-sm text-slate-800
+        {activeMenu === false && (
+          <div className=" p-2 shadow-lg hover:shadow-2xl rounded-md transition-all">
+            <h2 className="text-center mb-2 text-third text-xl">
+              Masukkan Tugas Akhir
+            </h2>
+            <form onSubmit={submitTask}>
+              <div className="grid w-full overflow-hidden">
+                <label className="text-third">
+                  Masukkan Tugas Project Github
+                </label>
+                <input
+                  type="text"
+                  className="p-2 outline-none border border-gray-900 rounded-sm"
+                  value={linkGithubTask}
+                  onChange={(e) => setLinkGithubTask(e.target.value)}
+                  placeholder="Link Project Github"
+                  required
+                />
+              </div>
+              <div className="grid w-full mt-3 overflow-hidden">
+                <label className="text-third">Masukkan File Tugas</label>
+                <input
+                  type="file"
+                  className="block w-full text-sm text-slate-800
                            file:mr-4 file:py-2 file:px-4
                            file:rounded-full file:border-0
                            file:text-sm file:font-semibold
                         file:bg-violet-50 file:text-emerald-700
                         hover:file:bg-violet-100"
-              ref={taskRef}
-            />
+                  ref={taskRef}
+                />
+              </div>
+              <div className="mx-auto w-[45%] mt-2 rounded-t-md overflow-hidden bg-emerald-700 hover:bg-emerald-800 text-white">
+                <button type="submit" className="w-full p-2">
+                  Enter
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="mx-auto w-[45%] mt-2 rounded-t-md overflow-hidden bg-emerald-700 hover:bg-emerald-800 text-white">
-            <button type="submit" className="w-full p-2">
-              Enter
-            </button>
-          </div>
-        </form>
+        )}
       </div>
+
+      {activeMenu && (
+        <div className="p-2 w-1/2 mx-auto my-2 shadow-lg hover:shadow-2xl rounded-md transition-all">
+          <h2 className="text-center mb-2 text-third text-xl">
+            Masukkan Tugas Akhir
+          </h2>
+          <form onSubmit={submitTask}>
+            <div className="grid w-[65%] overflow-hidden">
+              <label className="text-third">
+                Masukkan Tugas Project Github
+              </label>
+              <input
+                type="text"
+                className="p-2 outline-none border border-gray-900 rounded-sm"
+                value={linkGithubTask}
+                onChange={(e) => setLinkGithubTask(e.target.value)}
+                placeholder="Link Project Github"
+                required
+              />
+            </div>
+            <div className="grid w-[65%] mt-3 overflow-hidden">
+              <label className="text-third">Masukkan File Tugas</label>
+              <input
+                type="file"
+                className="block w-full text-sm text-slate-800
+                           file:mr-4 file:py-2 file:px-4
+                           file:rounded-full file:border-0
+                           file:text-sm file:font-semibold
+                        file:bg-violet-50 file:text-emerald-700
+                        hover:file:bg-violet-100"
+                ref={taskRef}
+              />
+            </div>
+            <div className="mx-auto w-[45%] mt-2 rounded-t-md overflow-hidden bg-emerald-700 hover:bg-emerald-800 text-white">
+              <button type="submit" className="w-full p-2">
+                Enter
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

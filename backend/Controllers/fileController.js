@@ -33,9 +33,15 @@ const getSpesificFile = async (req, res) => {
 };
 
 const addFile = asyncWrapper(async (req, res) => {
-  try {
     const { titleFile, descFile, categoryFile } = req.body;
     const file = req.file.path;
+
+    if(!titleFile || !descFile || !categoryFile) {
+      res.status(400).json({err: "Field tidak boleh ada yang kosong!"});
+      return;
+    }
+
+  try {
     const saveFile = await Files.create({
       titleFile,
       descFile,

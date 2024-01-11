@@ -9,11 +9,11 @@ import { ItemProfile } from "../index";
 
 // Icons
 import { FaUser } from "react-icons/fa";
-
+import { IoMdMenu } from "react-icons/io";
 
 const NavbarStudent = () => {
    const { user } = UseUserContext();
-   const { handleClicked, initialValue } = useActContext();
+   const { handleClicked, initialValue, setActiveMenu } = useActContext();
   return (
     <div className="px-10 flex w-3/2 py-2 flex-row-reverse justify-between shadow-md rounded-md">
       <div className="photo-user rounded-full w-11 h-11 overflow-hidden">
@@ -28,6 +28,13 @@ const NavbarStudent = () => {
       <div className="text-third font-bold py-2">
         <h2 className="text-xl">Hai, {user.dataUser.namaDepan}</h2>
       </div>
+      <button
+        type="button"
+        onClick={() => setActiveMenu((prev) => !prev)}
+        className="relative rounded-full text-xl p-3 hover:bg-light-gray"
+      >
+        <IoMdMenu />
+      </button>
       {initialValue.userProfile && <ItemProfile />}
     </div>
   );
