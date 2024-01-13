@@ -29,6 +29,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get("/", (res, req) => {
+  res.json("hello");
+})
+
 app.use("/api/login", login);
 app.use("/api/register", register);
 app.use("/api/user", userSystem);
