@@ -14,12 +14,11 @@ const port = process.env.PORT || 4000;
 // Connect to vercel
 app.use(
   cors({
-    origin: ["lms-tugas-akhir-3raa.vercel.app/"],
+    origin: [""],
     methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
     credentials: true
   })
 );
-app.use(express.json());
 
 // Import Route
 const login = require("./routes/login");
