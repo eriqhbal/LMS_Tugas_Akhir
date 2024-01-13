@@ -39,7 +39,7 @@ app.use("/api/nilaiStudent", nilaiStudent);
 
 const startServer = async () => {
   try {
-    await ConnectionDB(process.env.URI);
+    await ConnectionDB(process.env.MONGODB_ATLAS);
     server.listen(port, () => console.log(`Your Server Running on port ${port}`));
   } catch (err) {
     console.log(err);
