@@ -20,6 +20,12 @@ app.use(
   })
 );
 
+// Routes
+app.get("/", (res, req) => {
+  res.json("hello");
+  return;
+})
+
 // Import Route
 const login = require("./routes/login");
 const register = require("./routes/register");
@@ -36,11 +42,6 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
-
-// Routes
-app.get("/", (res, req) => {
-  res.json("hello");
-})
 
 app.use("/api/login", login);
 app.use("/api/register", register);
