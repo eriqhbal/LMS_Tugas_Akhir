@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 // images or assets
 import Images from "../../assets/images/uirlogo.png";
 
+import { FaRegEye, FaEyeSlash } from "react-icons/fa";
+
 // Register Screen
 import Register from "./Register";
 
@@ -15,6 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
   const { screenSize, setScreenSize } = useActContext();
   const [error, setError] = useState(null);
   const [blurThemeAndPopUpRegister, setBlurThemeAndPopUpRegister] =
@@ -59,6 +62,15 @@ const Login = () => {
       dispatch({ type: "LOGIN", payload: dataJson });
     }
   };
+
+  const handlePasswordType = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text');
+      return;
+    } else {
+      setPasswordType('password');
+    }
+  }
 
   const moveToRegister = () => {
     navigate("/register");
@@ -134,9 +146,9 @@ const Login = () => {
                 <label htmlFor="password" className="text-white">
                   Password :
                 </label>
-                <div className="mb-3">
+                <div className="mb-3 flex">
                   <input
-                    type="password"
+                    type={passwordType}
                     name="password"
                     className="p-2 rounded-sm w-full"
                     value={password}
@@ -144,6 +156,15 @@ const Login = () => {
                     disabled={blurThemeAndPopUpRegister}
                     placeholder="******"
                   />
+                  <div className="w-10 h-15 border rounded-sm bg-white">
+                    <button type="button" onClick={handlePasswordType} className="w-full h-full flex justify-center items-center">
+                      {passwordType === "password" ? (
+                        <FaEyeSlash />
+                      ) : (
+                        <FaRegEye />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
               <button

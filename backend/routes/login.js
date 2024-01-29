@@ -21,6 +21,7 @@ router
 
     if (!email || !password) {
       res.status(400).json({ error: "Form Tidak Boleh Kosong" });
+      return;
     }
 
     if (email.includes("student")) {
@@ -32,6 +33,7 @@ router
               res.status(200).json({ dataUser, token });
             } else {
               res.status(400).json({ error: "Email atau Password Anda Salah" });
+              return;
             }
           } else {
             res.status(404).json({ error: "Email Anda Belum Terdaftar!" });

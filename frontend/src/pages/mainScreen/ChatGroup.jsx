@@ -17,7 +17,7 @@ const ChatGroup = () => {
     <div>
       <ChatEngine
         height="100vh"
-        projectID="4d62a489-194c-4352-bad7-095b8f9d4451"
+        projectID="9f143648-a953-4a69-9db6-a59ef5c7311d"
         userName={localStorage.getItem("username")}
         userSecret={localStorage.getItem("password")}
       />

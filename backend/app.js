@@ -11,15 +11,6 @@ const ConnectionDB = require("./db/ConnectionDB");
 
 const port = process.env.PORT || 4000;
 
-// Connect to vercel
-app.use(
-  cors({
-    origin: [""],
-    methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
-    credentials: true
-  })
-);
-
 // Routes
 app.get("/", (res, req) => {
   res.json("hello");
@@ -53,7 +44,7 @@ app.use("/api/nilaiStudent", nilaiStudent);
 
 const startServer = async () => {
   try {
-    await ConnectionDB(process.env.MONGODB_ATLAS);
+    await ConnectionDB(process.env.URI);
     server.listen(port, () => console.log(`Your Server Running on port ${port}`));
   } catch (err) {
     console.log(err);
