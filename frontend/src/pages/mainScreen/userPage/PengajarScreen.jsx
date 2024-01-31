@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -15,6 +15,7 @@ const PengajarScreen = () => {
   const [descFile, setDescFile] = useState("");
   const [countData, setCountData] = useState(10);
   const [dataStudent, setDataStudent] = useState([]);
+  const [searchStudent, setSearchStudent] = useState("");
   const [categoryFile, setCategoryFile] = useState("html-dasar");
   const [linkGithubTask, setLinkGithubTask] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,12 @@ const PengajarScreen = () => {
   useEffect(() => {
     setLinkGithubTask("");
   }, [loadingTask]);
+
+  const filteredStudent = useMemo(() => {
+    return dataStudent.filter(item => {
+      return item.namaDepan.toLowerCase().includes(searchStudent.toLowerCase())
+    })
+  }, [dataStudent, searchStudent])
 
   const submitHandle = async (e) => {
     e.preventDefault();
@@ -138,6 +145,7 @@ const PengajarScreen = () => {
       setDataStudent(response);
     }
   };
+  console.log(dataStudent);
   return (
     <div>
       <div
@@ -224,12 +232,16 @@ const PengajarScreen = () => {
         </div>
 
         <div className="daftar-student rounded-md overflow-hidden transition ease-in-out delay-100 shadow-lg hover:shadow-2xl">
-          <h3 className="my-2 text-black text-center text-third pt-2 pb-1 w-2/3 mx-auto">
+          <h3 className="my-2 text-black text-center text-third pt-2 pb-1 w-2/3 mx-auto text-xl">
             Daftar Pelajar
           </h3>
 
           <div className="px-3 py-2 mx-10  h-40 overflow-hidden hover:overflow-auto border-dashed border-l-2 border-emerald-700 rounded-lg">
-            {dataStudent.map((data) => {
+            <div>
+              <p className="text-center text-third">Cari Nama Pelajar</p>
+              <input type="search" value={searchStudent} onChange={(e) => setSearchStudent(e.target.value)} placeholder="Nama Depan pelajar" className="p-2 w-full outline-none border-[1.5px] rounded-sm border-black"/>
+            </div>
+            {filteredStudent.map((data) => {
               return (
                 <div
                   key={data._id}
